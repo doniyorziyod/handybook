@@ -1,36 +1,166 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.ProfileFragment">
-    <ImageView
-        android:id="@+id/profile_back_to_home"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="10dp"
-        android:src="@drawable/back_ic"
-        />
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@id/profile_back_to_home"
-        app:layout_constraintBottom_toBottomOf="@id/profile_back_to_home"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:text="Shaxsiy kabinet"
-        android:textSize="22sp"
-        android:textColor="@color/back_blue"
-        android:textStyle="bold"
-        android:fontFamily="@font/montserratbold"/>
-    <ImageView
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="10dp"
-        android:src="@drawable/settings_ic"/>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:orientation="vertical">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/profile_back_to_home"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_margin="10dp"
+                android:src="@drawable/back_ic"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/profile_back_to_home"
+                app:layout_constraintBottom_toBottomOf="@id/profile_back_to_home"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:text="Shaxsiy kabinet"
+                android:textSize="22sp"
+                android:textColor="@color/back_blue"
+                android:textStyle="bold"
+                android:fontFamily="@font/montserratbold"/>
+            <ImageView
+                android:id="@+id/profile_settings"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_margin="10dp"
+                android:src="@drawable/settings_ic"/>
+
+            <ImageView
+                android:id="@+id/profile_person_image"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                app:layout_constraintTop_toBottomOf="@id/profile_back_to_home"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/person_ic"/>
+            <TextView
+                android:id="@+id/profile_person_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/profile_person_image"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="5dp"
+                android:text="Azizov Ali"
+                android:fontFamily="@font/montserratbold"
+                android:textColor="@color/back_blue"
+                android:textSize="18sp"/>
+            <LinearLayout
+                android:id="@+id/profile_books_count"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/profile_person_name"
+                android:layout_margin="20dp">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="2"
+                        android:textSize="17sp"
+                        android:textColor="@color/back_blue"
+                        android:textStyle="bold"
+                        android:textAlignment="center"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="O`qilayotgan kitoblar"
+                        android:textSize="12sp"
+                        android:textAlignment="center"
+                        android:padding="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginStart="5dp"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="2"
+                        android:textSize="17sp"
+                        android:textColor="@color/back_blue"
+                        android:textStyle="bold"
+                        android:textAlignment="center"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="O`qilayotgan kitoblar"
+                        android:textSize="12sp"
+                        android:textAlignment="center"
+                        android:padding="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginStart="5dp"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="2"
+                        android:textSize="17sp"
+                        android:textColor="@color/back_blue"
+                        android:textStyle="bold"
+                        android:textAlignment="center"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="O`qilayotgan kitoblar"
+                        android:textSize="12sp"
+                        android:textAlignment="center"
+                        android:padding="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:layout_marginStart="5dp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/profile_oq_oddiy_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/profile_books_count"
+                app:layout_constraintStart_toStartOf="@id/profile_back_to_home"
+                android:layout_marginTop="30dp"
+                android:text="O`qilayotgan kitoblar"
+                android:textColor="@color/back_blue"
+                android:textSize="18sp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="@id/profile_settings"
+                app:layout_constraintTop_toTopOf="@+id/profile_oq_oddiy_text"
+                app:layout_constraintBottom_toBottomOf="@+id/profile_oq_oddiy_text"
+                android:text="Barchsini ko`rish"
+                android:textColor="@color/light_blue"
+                android:textStyle="bold"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>
