@@ -1,10 +1,13 @@
 package uz.ictschool.handybook.ui
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import androidx.fragment.app.Fragment
 import uz.ictschool.handybook.R
 import uz.ictschool.handybook.databinding.FragmentSplashBinding
 
@@ -35,7 +38,40 @@ class SplashFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = FragmentSplashBinding.inflate(inflater,container,false)
+        val binding = FragmentSplashBinding.inflate(inflater, container, false)
+
+        var shake = AnimationUtils.loadAnimation(requireContext(), R.anim.shake)
+        var replenish = AnimationUtils.loadAnimation(requireContext(), R.anim.replenish)
+        var dissapear = AnimationUtils.loadAnimation(requireContext(), R.anim.dissappear)
+
+
+            binding.imageView3.startAnimation(dissapear)
+            binding.splashLottie.startAnimation(dissapear)
+
+            dissapear.setAnimationListener(object : Animation.AnimationListener {
+                override fun onAnimationStart(animation: Animation?) {
+
+                }
+
+                override fun onAnimationEnd(animation: Animation?) {
+                    binding.imageView3.visibility = View.GONE
+                    binding.splashLottie.visibility = View.GONE
+                    binding.splashSecond.visibility = View.VISIBLE
+                    binding.splashSecond.startAnimation(shake)
+                    binding.splashSecond.startAnimation(replenish)
+                }
+
+                override fun onAnimationRepeat(animation: Animation?) {
+                }
+
+            })
+
+        binding.login.setOnClickListener {
+            parentFragmentManager.beginTransaction().replace(R.id.main,SignInFragment()).commit()
+        }
+        binding.login.setOnClickListener {
+            parentFragmentManager.beginTransaction().replace(R.id.main,SignUpFragment()).commit()
+        }
 
         return binding.root
     }
