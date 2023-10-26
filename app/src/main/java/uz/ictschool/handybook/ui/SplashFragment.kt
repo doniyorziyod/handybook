@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
+import okhttp3.internal.wait
 import uz.ictschool.handybook.R
 import uz.ictschool.handybook.databinding.FragmentSplashBinding
 
@@ -45,7 +46,7 @@ class SplashFragment : Fragment() {
         var dissapear = AnimationUtils.loadAnimation(requireContext(), R.anim.dissappear)
 
 
-            binding.imageView3.startAnimation(dissapear)
+//            binding.imageView.startAnimation(dissapear)
             binding.splashLottie.startAnimation(dissapear)
 
             dissapear.setAnimationListener(object : Animation.AnimationListener {
@@ -54,11 +55,14 @@ class SplashFragment : Fragment() {
                 }
 
                 override fun onAnimationEnd(animation: Animation?) {
-                    binding.imageView3.visibility = View.GONE
+                    binding.imageView.visibility = View.GONE
                     binding.splashLottie.visibility = View.GONE
+
                     binding.splashSecond.visibility = View.VISIBLE
-                    binding.splashSecond.startAnimation(shake)
+//                    binding.splashSecond.startAnimation(shake)
                     binding.splashSecond.startAnimation(replenish)
+
+
                 }
 
                 override fun onAnimationRepeat(animation: Animation?) {
@@ -69,7 +73,7 @@ class SplashFragment : Fragment() {
         binding.login.setOnClickListener {
             parentFragmentManager.beginTransaction().replace(R.id.main,SignInFragment()).commit()
         }
-        binding.login.setOnClickListener {
+        binding.register.setOnClickListener {
             parentFragmentManager.beginTransaction().replace(R.id.main,SignUpFragment()).commit()
         }
 
