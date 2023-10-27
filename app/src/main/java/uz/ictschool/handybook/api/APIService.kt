@@ -6,12 +6,16 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import uz.ictschool.handybook.data.Book
 import uz.ictschool.handybook.data.User
-import uz.ictschool.handybook.data.loginDetails
+import uz.ictschool.handybook.data.LoginDetails
+import uz.ictschool.handybook.data.UserToken
 
 interface APIService {
     @GET("/book-api")
     fun getAllBooks(): Call<List<Book>>
 
     @POST("/book-api/login")
-    fun login(@Body loginDetails: loginDetails): Call<User>
+    fun login(@Body loginDetails: LoginDetails): Call<UserToken>
+
+    @POST("/book-api/ register")
+    fun register(@Body user: User): Call<UserToken>
 }
