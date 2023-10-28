@@ -1,24 +1,28 @@
 package uz.ictschool.handybook.ui
 
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
+import android.util.Patterns
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import uz.ictschool.handybook.R
+import uz.ictschool.handybook.api.APIClient
+import uz.ictschool.handybook.api.APIService
+import uz.ictschool.handybook.data.User
+import uz.ictschool.handybook.databinding.FragmentSignUpBinding
+import uz.ictschool.handybook.services.SharedPreference
+import java.util.regex.Pattern
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [SignUpFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class SignUpFragment : Fragment() {
-    // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
 
@@ -30,24 +34,91 @@ class SignUpFragment : Fragment() {
         }
     }
 
+    lateinit var mySharedPreferences: SharedPreference
+    private val api = APIClient.getInstance().create(APIService::class.java)
+    lateinit var binding: FragmentSignUpBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sign_up, container, false)
+    ): View {
+        binding = FragmentSignUpBinding.inflate(inflater, container, false)
+        mySharedPreferences = SharedPreference.newInstance(requireContext())
+        binding.signupSignupMb.setOnClickListener {
+            val data = checkRegistrationInfo(binding.signupIsm.text.toString(), binding.signupUsernameEditAcet.text.toString(),
+                binding.signupEmailEditAcet.text.toString(), binding.signupPasswordEditAcet.text.toString(), binding.signupReenterPasswordEditAcet.text.toString())
+            if (data != null){
+                api.register(data).enqueue(object : Callback<User>{
+                    override fun onResponse(call: Call<User>, response: Response<User>) {
+//                        binding.signupUsernameEditAcet.error = "fgsdfgsdfgds"
+                        if (response.code() == 422){
+                            binding.signupUsernameEditAcet.error = "Bunday username band"
+                        }
+                        if (response.isSuccessful && response.code() == 200){
+                            val a = mutableListOf<User>()
+                            a.add(data)
+                            mySharedPreferences.setLoginData(a)
+                            parentFragmentManager.beginTransaction().replace(R.id.main, HomeFragment()).commit()
+                        }
+                        Log.d("TAG", "onResponse: ${response.body()}")
+                    }
+
+                    override fun onFailure(call: Call<User>, t: Throwable) {
+                        Log.d("Register TAG", "onFailure: $t")
+                    }
+
+                })
+            }
+        }
+        return binding.root
+    }
+
+    private fun checkRegistrationInfo(name: String, username: String, email: String, password: String, repassword:String ): User?{
+        if (name.isEmpty()){
+            binding.signupIsm.error = "Ismingiz va Familiyangizni kiriting"
+            return null
+        }
+        if (username.isEmpty()){
+            binding.signupUsernameEditAcet.error = "Username kiriting"
+            return null
+        }
+        if (email.isEmpty()){
+            binding.signupEmailEditAcet.error = "Email kiriting"
+            return null
+        }
+        if (password.isEmpty()){
+            binding.signupPasswordEditAcet.error = "Parol kiriting"
+            return null
+        }
+        if (repassword.isEmpty()){
+            binding.signupReenterPasswordEditAcet.error = "Parolni qayta kiriting"
+            return null
+        }
+
+        if (name.length<6){
+            binding.signupIsm.error = "Ismingiz va Familiyangizni to`liq kiriting"
+            return null
+        }
+        if (username.length<3){
+            binding.signupUsernameEditAcet.error = "Username 3ta belgidan kam"
+            return null
+        }
+        if (password.length<8){
+            binding.signupPasswordEditAcet.error = "Parol 8ta belgidan kam"
+            return null
+        }
+        if (repassword != password){
+            binding.signupReenterPasswordEditAcet.error = "Parol bir xil emas"
+            return null
+        }
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            binding.signupEmailEditAcet.error = "Email kiriting"
+            return null
+        }
+
+        return User(username, email, password, name)
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment SignUpFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             SignUpFragment().apply {
