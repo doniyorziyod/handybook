@@ -45,7 +45,15 @@ class ProfileFragment : Fragment() {
             parentFragmentManager.beginTransaction().replace(R.id.main, HomeFragment()).commit()
         }
 
-
+        binding.inReadingView.setOnClickListener {
+            parentFragmentManager.beginTransaction().replace(R.id.main, InReadingFragment()).addToBackStack("Profile").commit()
+        }
+        binding.outReadingView.setOnClickListener {
+            parentFragmentManager.beginTransaction().replace(R.id.main, OutReadingFragment()).addToBackStack("Profile").commit()
+        }
+        binding.savedView.setOnClickListener {
+            parentFragmentManager.beginTransaction().replace(R.id.main, SavedBooksFragment()).addToBackStack("Profile").commit()
+        }
         return binding.root
     }
 

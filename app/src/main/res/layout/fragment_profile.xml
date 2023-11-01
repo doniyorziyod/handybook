@@ -78,10 +78,11 @@
                     android:background="@drawable/forsearchview"
                     android:layout_marginEnd="10dp">
                     <TextView
+                        android:id="@+id/in_reading_count"
                         android:layout_marginTop="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="2"
+                        android:text="0"
                         android:textSize="17sp"
                         android:textColor="@color/back_blue"
                         android:textStyle="bold"
@@ -104,10 +105,11 @@
                     android:background="@drawable/forsearchview"
                     android:layout_marginEnd="10dp">
                     <TextView
+                        android:id="@+id/out_reading_count"
                         android:layout_marginTop="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="2"
+                        android:text="0"
                         android:textSize="17sp"
                         android:textColor="@color/back_blue"
                         android:textStyle="bold"
@@ -129,10 +131,11 @@
                     android:orientation="vertical"
                     android:background="@drawable/forsearchview">
                     <TextView
+                        android:id="@+id/saved_reading_count"
                         android:layout_marginTop="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="2"
+                        android:text="0"
                         android:textSize="17sp"
                         android:textColor="@color/back_blue"
                         android:textStyle="bold"
@@ -160,6 +163,7 @@
                 android:textColor="@color/back_blue"
                 android:textSize="18sp"/>
             <TextView
+                android:id="@+id/in_reading_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="@id/profile_settings"
@@ -184,10 +188,11 @@
                 app:layout_constraintTop_toBottomOf="@id/profile_oqilayotgan_kitoblar_recycler"
                 app:layout_constraintStart_toStartOf="@id/profile_back_to_home"
                 android:layout_marginTop="30dp"
-                android:text="O`qilayotgan kitoblar"
+                android:text="O`qilgan kitoblar"
                 android:textColor="@color/back_blue"
                 android:textSize="18sp"/>
             <TextView
+                android:id="@+id/out_reading_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="@id/profile_settings"
@@ -212,10 +217,11 @@
                 app:layout_constraintTop_toBottomOf="@id/profile_oqilgan_kitoblar_recycler"
                 app:layout_constraintStart_toStartOf="@id/profile_back_to_home"
                 android:layout_marginTop="30dp"
-                android:text="O`qilayotgan kitoblar"
+                android:text="Saqlangan kitoblar"
                 android:textColor="@color/back_blue"
                 android:textSize="18sp"/>
             <TextView
+                android:id="@+id/saved_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="@id/profile_settings"
