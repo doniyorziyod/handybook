@@ -4,6 +4,7 @@ import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Query
 import uz.ictschool.handybook.data.Book
 import uz.ictschool.handybook.data.CategoryData
 import uz.ictschool.handybook.data.User
@@ -22,4 +23,7 @@ interface APIService {
 
     @GET("/book-api/all-category")
     fun getAllCategory():Call<List<CategoryData>>
+
+    @GET("/book-api/category?name")
+    fun getBooksByCategory(@Query("name")name: String): Call<List<Book>>
 }

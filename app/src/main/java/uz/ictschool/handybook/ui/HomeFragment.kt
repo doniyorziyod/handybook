@@ -11,8 +11,10 @@ import farrukh.remotely.adapter.CategoryAdapter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import uz.ictschool.handybook.R
 import uz.ictschool.handybook.api.APIClient
 import uz.ictschool.handybook.api.APIService
+import uz.ictschool.handybook.data.Book
 import uz.ictschool.handybook.data.CategoryData
 import uz.ictschool.handybook.databinding.FragmentHomeBinding
 
@@ -38,11 +40,12 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-//        binding.imageView2.setOnClickListener {
-//            parentFragmentManager.beginTransaction().replace(R.id.main, ProfileFragment()).commit()
-//        }
+        binding.imageView2.setOnClickListener {
+            parentFragmentManager.beginTransaction().replace(R.id.main, ProfileFragment()).commit()
+        }
         val api = APIClient.getInstance().create(APIService::class.java)
-        var categories = mutableListOf<CategoryData>()
+        val categories = mutableListOf<CategoryData>()
+
 
         api.getAllCategory().enqueue(object : Callback<List<CategoryData>> {
             override fun onResponse(
@@ -53,18 +56,32 @@ class HomeFragment : Fragment() {
                     categories.add(response.body()!!.get(i))
                 }
                 if (categories.isNotEmpty()) {
-                    var adapter =
+                    val adapter =
                         CategoryAdapter(
                             categories,
                             requireContext(),
                             object : CategoryAdapter.ItemClick {
                                 override fun OnItemClick(category: String) {
+                                    api.getBooksByCategory(category).enqueue(object : Callback<List<Book>>{
+                                        override fun onResponse(
+                                            call: Call<List<Book>>,
+                                            response: Response<List<Book>>
+                                        ) {
+                                            Log.d(TAG, "onResponse: ${response.body()}")
+                                        }
 
+                                        override fun onFailure(
+                                            call: Call<List<Book>>,
+                                            t: Throwable
+                                        ) {
+                                            Log.d(TAG, "onFailure: $t")
+                                        }
+
+                                    })
                                 }
-
                             })
 
-                    var manager =
+                    val manager =
                         LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
                     binding.category.layoutManager = manager
                     binding.category.adapter = adapter
@@ -78,6 +95,8 @@ class HomeFragment : Fragment() {
             }
 
         })
+
+
         return binding.root
     }
 

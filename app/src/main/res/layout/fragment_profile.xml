@@ -21,9 +21,6 @@
                 android:layout_margin="10dp"
                 android:src="@drawable/back_ic"
                 />
-
-
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -77,8 +74,11 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:background="@drawable/forsearchview"
+                    android:layout_marginEnd="10dp">
                     <TextView
+                        android:layout_marginTop="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="2"
@@ -100,8 +100,11 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:background="@drawable/forsearchview"
+                    android:layout_marginEnd="10dp">
                     <TextView
+                        android:layout_marginTop="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="2"
@@ -112,19 +115,21 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="O`qilayotgan kitoblar"
+                        android:text="O`qilgan kitoblar"
                         android:textSize="12sp"
                         android:textAlignment="center"
                         android:padding="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginStart="5dp"/>
+                        android:layout_marginEnd="13dp"
+                        android:layout_marginStart="13dp"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:background="@drawable/forsearchview">
                     <TextView
+                        android:layout_marginTop="5dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="2"
@@ -135,12 +140,12 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="O`qilayotgan kitoblar"
+                        android:text="Saqlangan kitoblar"
                         android:textSize="12sp"
                         android:textAlignment="center"
                         android:padding="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginStart="5dp"/>
+                        android:layout_marginEnd="7dp"
+                        android:layout_marginStart="7dp"/>
                 </LinearLayout>
             </LinearLayout>
 

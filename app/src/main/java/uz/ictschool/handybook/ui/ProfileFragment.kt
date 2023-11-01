@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import uz.ictschool.handybook.R
 import uz.ictschool.handybook.api.APIClient
 import uz.ictschool.handybook.api.APIService
 import uz.ictschool.handybook.data.Book
@@ -39,16 +40,12 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentProfileBinding.inflate(inflater, container, false)
-        api.getAllBooks().enqueue(object : Callback<List<Book>>{
-            override fun onResponse(call: Call<List<Book>>, response: Response<List<Book>>) {
-                Log.d("TAG", "onResponse: ${response.body()}")
-            }
 
-            override fun onFailure(call: Call<List<Book>>, t: Throwable) {
-                Log.d("TAG", "onFailure: $t")
-            }
+        binding.profileBackToHome.setOnClickListener {
+            parentFragmentManager.beginTransaction().replace(R.id.main, HomeFragment()).commit()
+        }
 
-        })
+
         return binding.root
     }
 
