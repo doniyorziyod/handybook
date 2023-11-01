@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import farrukh.remotely.adapter.CategoryAdapter
@@ -35,6 +36,7 @@ class HomeFragment : Fragment() {
         }
     }
 
+    lateinit var currentcategory: String
     lateinit var binding: FragmentHomeBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,8 +48,10 @@ class HomeFragment : Fragment() {
         }
         val api = APIClient.getInstance().create(APIService::class.java)
         val categories = mutableListOf<CategoryData>()
+        currentcategory = ""
 
 
+        //Category Recycler
         api.getAllCategory().enqueue(object : Callback<List<CategoryData>> {
             override fun onResponse(
                 call: Call<List<CategoryData>>,
@@ -63,6 +67,7 @@ class HomeFragment : Fragment() {
                             requireContext(),
                             object : CategoryAdapter.ItemClick {
                                 override fun OnItemClick(category: String) {
+                                    currentcategory = category
                                     if (!response.body()!!.contains(CategoryData(category))){
                                         api.getAllBooks().enqueue(object : Callback<List<Book>>{
                                             override fun onResponse(
@@ -76,7 +81,7 @@ class HomeFragment : Fragment() {
                                                         parentFragmentManager.beginTransaction().replace(R.id.main, BookViewFragment()).addToBackStack("Home").commit()
                                                     }
                                                 })
-                                                Log.d(TAG, "onResponse: ${response.body()}, $category")
+                                                Log.d(TAG, "onResponse: $category, ${response.body()},")
                                             }
 
                                             override fun onFailure(
@@ -105,7 +110,7 @@ class HomeFragment : Fragment() {
                                                     binding.homeKitoblarRecycler.visibility = View.GONE
                                                     binding.homeNotfound.visibility = View.VISIBLE
                                                 }
-                                                Log.d(TAG, "onResponse: ${response.body()}")
+                                                Log.d(TAG, "onResponse: $category,  ${response.body()}")
                                             }
 
                                             override fun onFailure(
@@ -125,35 +130,72 @@ class HomeFragment : Fragment() {
                     binding.category.layoutManager = manager
                     binding.category.adapter = adapter
                 }
-
-
-
-                api.getAllBooks().enqueue(object : Callback<List<Book>>{
-                    override fun onResponse(
-                        call: Call<List<Book>>,
-                        response: Response<List<Book>>
-                    ) {
-                        binding.homeKitoblarRecycler.adapter = BookAdapter(response.body()!!, object : BookAdapter.OnPressed{
-                            override fun onPressed(book: Book) {
-                                parentFragmentManager.beginTransaction().replace(R.id.main, BookViewFragment()).addToBackStack("Home").commit()
-                            }
-                        })
-                    }
-
-                    override fun onFailure(
-                        call: Call<List<Book>>,
-                        t: Throwable
-                    ) {
-                        Log.d(TAG, "onFailure: $t")
-                    }
-
-                })
-
-
             }
 
             override fun onFailure(call: Call<List<CategoryData>>, t: Throwable) {
                 Log.d(TAG, "onFailure: $t")
+            }
+        })
+
+        //Books Recycler
+        api.getAllBooks().enqueue(object : Callback<List<Book>>{
+            override fun onResponse(
+                call: Call<List<Book>>,
+                response: Response<List<Book>>
+            ) {
+                binding.homeKitoblarRecycler.adapter = BookAdapter(response.body()!!, object : BookAdapter.OnPressed{
+                    override fun onPressed(book: Book) {
+                        parentFragmentManager.beginTransaction().replace(R.id.main, BookViewFragment()).addToBackStack("Home").commit()
+                    }
+                })
+            }
+
+            override fun onFailure(
+                call: Call<List<Book>>,
+                t: Throwable
+            ) {
+                Log.d(TAG, "onFailure: $t")
+            }
+        })
+
+
+        //Search Stuff
+        binding.search.setOnQueryTextListener(object : OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText!=null){
+                    api.search(newText).enqueue(object : Callback<List<Book>>{
+                        override fun onResponse(
+                            call: Call<List<Book>>,
+                            response: Response<List<Book>>
+                        ) {
+                            if (response.body()?.isNotEmpty()!!){
+                                binding.homeKitoblarRecycler.adapter = BookAdapter(response.body()!!, object : BookAdapter.OnPressed{
+                                    override fun onPressed(book: Book) {
+                                        parentFragmentManager.beginTransaction().replace(R.id.main, BookViewFragment()).addToBackStack("Home").commit()
+                                    }
+                                })
+                                binding.homeKitoblarRecycler.visibility = View.VISIBLE
+                                binding.homeNotfound.visibility = View.GONE
+                            }else{
+                                binding.homeKitoblarRecycler.visibility = View.GONE
+                                binding.homeNotfound.visibility = View.VISIBLE
+                            }
+                        }
+
+                        override fun onFailure(call: Call<List<Book>>, t: Throwable) {
+                            Log.d("SearchTAG", "onFailure: $t")
+                        }
+
+                    })
+                    return true
+                }
+                binding.homeKitoblarRecycler.visibility = View.VISIBLE
+                binding.homeNotfound.visibility = View.GONE
+                return false
             }
 
         })
