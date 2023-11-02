@@ -6,8 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
+import androidx.appcompat.widget.SearchView.VISIBLE
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import coil.load
 import farrukh.remotely.adapter.BookAdapter
 import farrukh.remotely.adapter.CategoryAdapter
 import retrofit2.Call
@@ -19,6 +22,7 @@ import uz.ictschool.handybook.api.APIService
 import uz.ictschool.handybook.data.Book
 import uz.ictschool.handybook.data.CategoryData
 import uz.ictschool.handybook.databinding.FragmentHomeBinding
+import kotlin.math.log
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -42,17 +46,40 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+
+
         binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         binding.imageView2.setOnClickListener {
             parentFragmentManager.beginTransaction().replace(R.id.main, ProfileFragment()).commit()
         }
+        var books = mutableListOf<Book>()
         val api = APIClient.getInstance().create(APIService::class.java)
         val categories = mutableListOf<CategoryData>()
         currentcategory = ""
 
-//
-        //Category Recycler
+        
+        // main book
+        
+        api.getMainBook().enqueue(object: Callback<Book>{
+            override fun onResponse(call: Call<Book>, response: Response<Book>) {
+                Log.d(TAG, "onResponse: ${response.body()}")
+                binding.homeMainBookText.setText(response.body()!!.author+"ning "+response.body()!!.name+" asari")
+                binding.homeMainBookImage.load(response.body()!!.image)
+                binding.homeMainBookReadNowMb.setOnClickListener {
+                    parentFragmentManager.beginTransaction().replace(R.id.main,BookViewFragment()).commit()
+                }
+            }
+
+            override fun onFailure(call: Call<Book>, t: Throwable) {
+                TODO("Not yet implemented")
+            }
+
+        })
+
+
+//        Category Recycler
         api.getAllCategory().enqueue(object : Callback<List<CategoryData>> {
             override fun onResponse(
                 call: Call<List<CategoryData>>,
@@ -76,9 +103,10 @@ class HomeFragment : Fragment() {
                                                 response: Response<List<Book>>
                                             ) {
                                                 binding.booksRv.visibility = View.VISIBLE
-                                                binding.booksRv.visibility = View.GONE
+//                                                binding.booksRv.visibility = View.GONE
+                                                books = response.body()!!.toMutableList()
                                                 binding.booksRv.adapter = BookAdapter(
-                                                    response.body()!!,
+                                                    response.body()!!.toMutableList(),
                                                     object : BookAdapter.ItemClick {
                                                         override fun OnItemClick(book: Book) {
                                                             parentFragmentManager.beginTransaction()
@@ -111,17 +139,21 @@ class HomeFragment : Fragment() {
                                                 ) {
                                                     if (response.body()?.isNotEmpty()!!) {
                                                         binding.booksRv.visibility = View.VISIBLE
-                                                        binding.booksRv.visibility = View.GONE
+
                                                         binding.booksRv.adapter = BookAdapter(
-                                                            response.body()!!,
+                                                            response.body()!!.toMutableList(),
                                                             object : BookAdapter.ItemClick {
                                                                 override fun OnItemClick(book: Book) {
-                                                                    TODO("Not yet implemented")
+                                                                    parentFragmentManager.beginTransaction()
+                                                                        .replace(
+                                                                            R.id.main,
+                                                                            BookViewFragment()
+                                                                        ).commit()
                                                                 }
 
                                                             })
                                                     } else {
-                                                        binding.booksRv.visibility = View.GONE
+//                                                        binding.booksRv.visibility = View.GONE
                                                         binding.booksRv.visibility = View.VISIBLE
                                                     }
                                                     Log.d(
@@ -160,13 +192,26 @@ class HomeFragment : Fragment() {
                 call: Call<List<Book>>,
                 response: Response<List<Book>>
             ) {
-                binding.booksRv.adapter = BookAdapter(response.body()!!, object : BookAdapter.ItemClick{
-                    override fun OnItemClick(book: Book) {
-                        parentFragmentManager.beginTransaction().replace(R.id.main, BookViewFragment()).addToBackStack("Home").commit()
 
-                    }
+                books = response.body()!!.toMutableList()
+                Log.d(TAG, "onResponse: ${books}")
+                var layoutManager = GridLayoutManager(requireContext(),2,LinearLayoutManager.VERTICAL,false)
 
-                })
+
+                  val adapter =   BookAdapter(books, object : BookAdapter.ItemClick {
+                        override fun OnItemClick(book: Book) {
+                            parentFragmentManager.beginTransaction()
+                                .replace(R.id.main, BookViewFragment()).addToBackStack("Home")
+                                .commit()
+                        }
+
+                    })
+
+                binding.booksRv.visibility = View.VISIBLE
+
+                binding.booksRv.layoutManager = layoutManager
+                binding.booksRv.adapter = adapter
+
             }
 
             override fun onFailure(
@@ -192,7 +237,7 @@ class HomeFragment : Fragment() {
                             response: Response<List<Book>>
                         ) {
                             if (response.body()?.isNotEmpty()!!){
-                                binding.booksRv.adapter = BookAdapter(response.body()!!, object : BookAdapter.ItemClick{
+                                binding.booksRv.adapter = BookAdapter(response.body()!!.toMutableList(), object : BookAdapter.ItemClick{
                                     override fun OnItemClick(book: Book) {
                                         parentFragmentManager.beginTransaction().replace(R.id.main, BookViewFragment()).addToBackStack("Home").commit()
 
@@ -200,10 +245,10 @@ class HomeFragment : Fragment() {
 
                                 })
                                 binding.booksRv.visibility = View.VISIBLE
-                                binding.booksRv.visibility = View.GONE
-                            }else{
-                                binding.booksRv.visibility = View.GONE
-//                                binding..visibility = View.VISIBLE
+//                                binding.booksRv.visibility = View.GONE
+                            }else {
+//                                binding.booksRv.visibility = View.GONE
+                                binding.booksRv.visibility = View.VISIBLE
                             }
                         }
 

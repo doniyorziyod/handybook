@@ -30,6 +30,9 @@ interface APIService {
     @GET("/book-api/search-name")
     fun search(@Query("name") name: String):Call<List<Book>>
 
+    @GET("/book-api/main-book")
+    fun getMainBook():Call<Book>
+
 
 
 }

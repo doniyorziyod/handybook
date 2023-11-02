@@ -30,6 +30,7 @@ class SignInFragment : Fragment() {
         val binding = FragmentSignInBinding.inflate(inflater,container,false)
 
 
+
         return binding.root
     }
 
