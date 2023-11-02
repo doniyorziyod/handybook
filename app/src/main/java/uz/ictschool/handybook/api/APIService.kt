@@ -27,6 +27,9 @@ interface APIService {
     @GET("/book-api/category")
     fun getBookByCategory(@Query("name")name: String):Call<List<Book>>
 
+    @GET("/book-api/search-name")
+    fun search(@Query("name") name: String):Call<List<Book>>
+
 
 
 }

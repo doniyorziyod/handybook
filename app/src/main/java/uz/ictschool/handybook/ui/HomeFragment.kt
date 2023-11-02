@@ -143,94 +143,85 @@ class HomeFragment : Fragment() {
                                 }
                             })
 
-//                    val manager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-//                    binding.category.layoutManager = manager
-//                    binding.category.adapter = adapter
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<List<CategoryData>>, t: Throwable) {
-//                Log.d(TAG, "onFailure: $t")
-//            }
-//        })
-//
-//        //Books Recycler
-//        api.getAllBooks().enqueue(object : Callback<List<Book>>{
-//            override fun onResponse(
-//                call: Call<List<Book>>,
-//                response: Response<List<Book>>
-//            ) {
-//                binding.homeKitoblarRecycler.adapter = BookAdapter(response.body()!!, object : BookAdapter.OnPressed{
-//                    override fun onPressed(book: Book) {
-//                        parentFragmentManager.beginTransaction().replace(R.id.main, BookViewFragment()).addToBackStack("Home").commit()
-//                    }
-//                })
-//            }
-//
-//            override fun onFailure(
-//                call: Call<List<Book>>,
-//                t: Throwable
-//            ) {
-//                Log.d(TAG, "onFailure: $t")
-//            }
-//        })
-//
-//
-//        //Search Stuff
-//        binding.search.setOnQueryTextListener(object : OnQueryTextListener{
-//            override fun onQueryTextSubmit(query: String?): Boolean {
-//                return true
-//            }
-//
-//            override fun onQueryTextChange(newText: String?): Boolean {
-//                if (newText!=null){
-//                    api.search(newText).enqueue(object : Callback<List<Book>>{
-//                        override fun onResponse(
-//                            call: Call<List<Book>>,
-//                            response: Response<List<Book>>
-//                        ) {
-//                            if (response.body()?.isNotEmpty()!!){
-//                                binding.homeKitoblarRecycler.adapter = BookAdapter(response.body()!!, object : BookAdapter.OnPressed{
-//                                    override fun onPressed(book: Book) {
-//                                        parentFragmentManager.beginTransaction().replace(R.id.main, BookViewFragment()).addToBackStack("Home").commit()
-//                                    }
-//                                })
-//                                binding.homeKitoblarRecycler.visibility = View.VISIBLE
-//                                binding.homeNotfound.visibility = View.GONE
-//                            }else{
-//                                binding.homeKitoblarRecycler.visibility = View.GONE
-//                                binding.homeNotfound.visibility = View.VISIBLE
-//                            }
-//                        }
-//
-//                        override fun onFailure(call: Call<List<Book>>, t: Throwable) {
-//                            Log.d("SearchTAG", "onFailure: $t")
-//                        }
-//
-//                    })
-//                    return true
-//                }
-//                binding.homeKitoblarRecycler.visibility = View.VISIBLE
-//                binding.homeNotfound.visibility = View.GONE
-//                return false
-//            }
-//
-//        })
-
+                    val manager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                    binding.category.layoutManager = manager
+                    binding.category.adapter = adapter
                 }
+            }
+//
+            override fun onFailure(call: Call<List<CategoryData>>, t: Throwable) {
+                Log.d(TAG, "onFailure: $t")
+            }
+        })
 
+        //Books Recycler
+        api.getAllBooks().enqueue(object : Callback<List<Book>>{
+            override fun onResponse(
+                call: Call<List<Book>>,
+                response: Response<List<Book>>
+            ) {
+                binding.booksRv.adapter = BookAdapter(response.body()!!, object : BookAdapter.ItemClick{
+                    override fun OnItemClick(book: Book) {
+                        parentFragmentManager.beginTransaction().replace(R.id.main, BookViewFragment()).addToBackStack("Home").commit()
 
+                    }
 
-
-
-
+                })
             }
 
-            override fun onFailure(call: Call<List<CategoryData>>, t: Throwable) {
-                TODO("Not yet implemented")
+            override fun onFailure(
+                call: Call<List<Book>>,
+                t: Throwable
+            ) {
+                Log.d(TAG, "onFailure: $t")
+            }
+        })
+
+
+        //Search Stuff
+        binding.search.setOnQueryTextListener(object : OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return true
+            }
+//
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText!=null){
+                    api.search(newText).enqueue(object : Callback<List<Book>>{
+                        override fun onResponse(
+                            call: Call<List<Book>>,
+                            response: Response<List<Book>>
+                        ) {
+                            if (response.body()?.isNotEmpty()!!){
+                                binding.booksRv.adapter = BookAdapter(response.body()!!, object : BookAdapter.ItemClick{
+                                    override fun OnItemClick(book: Book) {
+                                        parentFragmentManager.beginTransaction().replace(R.id.main, BookViewFragment()).addToBackStack("Home").commit()
+
+                                    }
+
+                                })
+                                binding.booksRv.visibility = View.VISIBLE
+                                binding.booksRv.visibility = View.GONE
+                            }else{
+                                binding.booksRv.visibility = View.GONE
+//                                binding..visibility = View.VISIBLE
+                            }
+                        }
+
+                        override fun onFailure(call: Call<List<Book>>, t: Throwable) {
+                            Log.d("SearchTAG", "onFailure: $t")
+                        }
+
+                    })
+                    return true
+                }
+                binding.booksRv.visibility = View.VISIBLE
+//                binding.homeNotfound.visibility = View.GONE
+                return false
             }
 
         })
+
+
 
         return binding.root
 
