@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:fontFamily="@font/montserratbold"
-        android:text="Bosh Sahifa"
+        android:text="Romanlar"
         android:textColor="@color/back_blue"
         android:textSize="22sp"
         android:textStyle="bold"
