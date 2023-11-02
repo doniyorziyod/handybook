@@ -12,7 +12,7 @@ import uz.ictschool.handybook.R
 import uz.ictschool.handybook.data.Book
 
 class BookAdapter(
-    var array: MutableList<Book>,
+    var array: List<Book>,
     var listener: ItemClick
 ) : RecyclerView.Adapter<BookAdapter.MyHolder>() {
 
