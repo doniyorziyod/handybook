@@ -57,7 +57,9 @@ class SignUpFragment : Fragment() {
                         if (response.isSuccessful && response.code() == 200){
                             val a = mutableListOf<UserToken>()
                             a.add(response.body()!!)
+                            Log.d("TAGKOT", "onResponse: ${response.body()!!.id}")
                             mySharedPreferences.setLoginData(a)
+                            Log.d("TAG123", "onResponse: ${mySharedPreferences.getLoginData()}")
                             parentFragmentManager.beginTransaction().replace(R.id.main, DefaultFragment()).commit()
                         }
                         Log.d("TAG", "onResponse: ${response.body()}")
