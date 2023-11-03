@@ -24,7 +24,7 @@ class SignInFragment : Fragment() {
     private var param2: String? = null
     private lateinit var binding: FragmentSignInBinding
     private var api =APIClient.getInstance().create(APIService::class.java)
-    private lateinit var helper: Helper
+//    private lateinit var helper: Helper
 
 
 
@@ -33,7 +33,7 @@ class SignInFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentSignInBinding.inflate(inflater,container,false)
-        helper =Helper.getInstance(requireContext())
+//        helper =Helper.getInstance(requireContext())
 
 
 //

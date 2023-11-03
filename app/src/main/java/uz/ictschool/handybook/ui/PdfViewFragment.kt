@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.github.barteksc.pdfviewer.PDFView
 import uz.ictschool.handybook.R
+import uz.ictschool.handybook.data.Book
 import uz.ictschool.handybook.databinding.ActivityMainBinding
 import uz.ictschool.handybook.databinding.FragmentPdfViewBinding
 import uz.ictschool.handybook.databinding.FragmentProfileBinding
@@ -29,15 +30,15 @@ private const val ARG_PARAM2 = "param2"
  */
 class PdfViewFragment : Fragment() {
     lateinit var pdfView: PDFView
-    var pdfUrl = "https://unec.edu.az/application/uploads/2014/12/pdf-sample.pdf"
 
-    private var param1: String? = null
+
+    private var param1: Book? = null
     private var param2: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
+            param1 = it.getSerializable(ARG_PARAM1) as Book
             param2 = it.getString(ARG_PARAM2)
         }
     }
@@ -48,7 +49,16 @@ class PdfViewFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentPdfViewBinding.inflate(inflater, container, false)
-        binding.pdfview
+        pdfView = binding.idPDFView
+
+        var pdfUrl = "https://unec.edu.az/application/uploads/2014/12/pdf-sample.pdf"
+        RetrievePDFFromURL(pdfView).execute(pdfUrl)
+
+        // on below line we are calling our async
+        // task to load our pdf file from url.
+        // we are also passing our pdf view to
+        // it along with pdf view url.
+        RetrievePDFFromURL(pdfView).execute(param1!!.file)
 
 
         return binding.root
@@ -109,12 +119,13 @@ class PdfViewFragment : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(param1: Book) =
             PdfViewFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    putSerializable(ARG_PARAM1, param1)
+//                    putString(ARG_PARAM2, param2)
                 }
             }
     }
-}}
+}
+}

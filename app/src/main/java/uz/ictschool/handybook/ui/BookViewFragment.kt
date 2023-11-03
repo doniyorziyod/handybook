@@ -102,7 +102,7 @@ class BookViewFragment : Fragment() {
             parentFragmentManager.beginTransaction().replace(R.id.main,CommentFragment.newInstance(param1!!)).commit()
         }
         binding.pdfViewBtn.setOnClickListener{
-            parentFragmentManager.beginTransaction().replace(R.id.main,PdfViewFragment()).commit()
+            parentFragmentManager.beginTransaction().replace(R.id.main,PdfViewFragment.RetrievePDFFromURL.newInstance(param1!!)).commit()
         }
 
 

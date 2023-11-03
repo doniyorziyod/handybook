@@ -5,10 +5,10 @@
     android:layout_height="match_parent"
     tools:context=".ui.PdfViewFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
-    android:id="@+id/pdfview"
+
+    <com.github.barteksc.pdfviewer.PDFView
+    android:id="@+id/idPDFView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"/>
+    android:layout_height="match_parent" />
 
 </RelativeLayout>
