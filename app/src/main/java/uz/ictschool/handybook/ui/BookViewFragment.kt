@@ -1,11 +1,26 @@
 package uz.ictschool.handybook.ui
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import coil.load
+import farrukh.remotely.adapter.BookAdapter
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import uz.ictschool.handybook.R
+import uz.ictschool.handybook.api.APIClient
+import uz.ictschool.handybook.api.APIService
+import uz.ictschool.handybook.data.Book
+import uz.ictschool.handybook.data.CategoryData
+import uz.ictschool.handybook.databinding.FragmentBookViewBinding
+import kotlin.math.log
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -19,23 +34,64 @@ private const val ARG_PARAM2 = "param2"
  */
 class BookViewFragment : Fragment() {
     // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var param1: Book? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            param1 = it.getSerializable(ARG_PARAM1) as Book
+
         }
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_book_view, container, false)
+        val binding = FragmentBookViewBinding.inflate(inflater, container, false)
+
+        val api = APIClient.getInstance().create(APIService::class.java)
+//        val books = mutableListOf<Book>()
+
+        binding.appCompatImageView.load(param1!!.image)
+        binding.textView5.setText(param1!!.name)
+        binding.description.setText(param1!!.description)
+
+        api.getAllBooks().enqueue(object :Callback<List<Book>>{
+            override fun onResponse(call: Call<List<Book>>, response: Response<List<Book>>) {
+//                books = response.body()!!.toMutableList()
+                var layoutManager = GridLayoutManager(requireContext(),2,
+                    LinearLayoutManager.VERTICAL,false)
+
+                val adapter =   BookAdapter(response.body()!!.toMutableList(), object : BookAdapter.ItemClick {
+                    override fun OnItemClick(book: Book) {
+                        parentFragmentManager.beginTransaction()
+                            .replace(R.id.main, newInstance(book)).addToBackStack("Home")
+                            .commit()
+                    }
+
+                })
+
+                binding.tavsiyalar.adapter = adapter
+                binding.tavsiyalar.layoutManager = layoutManager
+            }
+
+            override fun onFailure(call: Call<List<Book>>, t: Throwable) {
+                Log.d("TAG", "onFailure: $t")
+            }
+
+        })
+
+        binding.commentBtn.setOnClickListener {
+            parentFragmentManager.beginTransaction().replace(R.id.main,CommentFragment()).commit()
+        }
+
+
+
+
+        return binding.root
     }
 
     companion object {
@@ -49,12 +105,14 @@ class BookViewFragment : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(param1: Book) =
             BookViewFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    putSerializable(ARG_PARAM1, param1)
+
                 }
             }
     }
+
+
 }

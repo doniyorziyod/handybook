@@ -68,7 +68,7 @@ class HomeFragment : Fragment() {
                 binding.homeMainBookText.setText(response.body()!!.author+"ning "+response.body()!!.name+" asari")
                 binding.homeMainBookImage.load(response.body()!!.image)
                 binding.homeMainBookReadNowMb.setOnClickListener {
-                    parentFragmentManager.beginTransaction().replace(R.id.main,BookViewFragment()).commit()
+                    parentFragmentManager.beginTransaction().replace(R.id.main,BookViewFragment.newInstance(response.body()!!)).commit()
                 }
             }
 
@@ -112,7 +112,7 @@ class HomeFragment : Fragment() {
                                                             parentFragmentManager.beginTransaction()
                                                                 .replace(
                                                                     R.id.main,
-                                                                    BookViewFragment()
+                                                                    BookViewFragment.newInstance(book)
                                                                 ).commit()
                                                         }
                                                     })
@@ -147,7 +147,7 @@ class HomeFragment : Fragment() {
                                                                     parentFragmentManager.beginTransaction()
                                                                         .replace(
                                                                             R.id.main,
-                                                                            BookViewFragment()
+                                                                            BookViewFragment.newInstance(book)
                                                                         ).commit()
                                                                 }
 
@@ -198,10 +198,10 @@ class HomeFragment : Fragment() {
                 var layoutManager = GridLayoutManager(requireContext(),2,LinearLayoutManager.VERTICAL,false)
 
 
-                  val adapter =   BookAdapter(books, object : BookAdapter.ItemClick {
+                  val adapter =   BookAdapter(response.body()!!.toMutableList(), object : BookAdapter.ItemClick {
                         override fun OnItemClick(book: Book) {
                             parentFragmentManager.beginTransaction()
-                                .replace(R.id.main, BookViewFragment()).addToBackStack("Home")
+                                .replace(R.id.main, BookViewFragment.newInstance(book)).addToBackStack("Home")
                                 .commit()
                         }
 
@@ -239,7 +239,7 @@ class HomeFragment : Fragment() {
                             if (response.body()?.isNotEmpty()!!){
                                 binding.booksRv.adapter = BookAdapter(response.body()!!.toMutableList(), object : BookAdapter.ItemClick{
                                     override fun OnItemClick(book: Book) {
-                                        parentFragmentManager.beginTransaction().replace(R.id.main, BookViewFragment()).addToBackStack("Home").commit()
+                                        parentFragmentManager.beginTransaction().replace(R.id.main, BookViewFragment.newInstance(book)).addToBackStack("Home").commit()
 
                                     }
 

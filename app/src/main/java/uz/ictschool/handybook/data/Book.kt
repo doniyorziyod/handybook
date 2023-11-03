@@ -1,5 +1,7 @@
 package uz.ictschool.handybook.data
 
+import java.io.Serializable
+
 data class Book(
     val audio: Any,
     val author: String,
@@ -15,4 +17,4 @@ data class Book(
     val status: Int,
     val type_id: Int,
     val year: String
-)
+):Serializable
