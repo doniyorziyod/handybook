@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.appcompat.widget.SearchView.VISIBLE
+import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -83,6 +84,8 @@ class HomeFragment : Fragment() {
         })
 
 
+        drawerListener()
+//        binding.profileBackToHome.setOnClickListener { drawerListener() }
 //        Category Recycler
         api.getAllCategory().enqueue(object : Callback<List<CategoryData>> {
             override fun onResponse(
@@ -283,30 +286,42 @@ class HomeFragment : Fragment() {
 //                binding.homeNotfound.visibility = View.GONE
                 return false
             }
-
         })
-
-
-
         return binding.root
-
+    }
+    companion object {
+            @JvmStatic
+            fun newInstance(param1: String, param2: String) =
+                HomeFragment().apply {
+                    arguments = Bundle().apply {
+                        putString(ARG_PARAM1, param1)
+                        putString(ARG_PARAM2, param2)
+                    }
+                }
     }
 
-
-
-
-
-            companion object {
-                @JvmStatic
-                fun newInstance(param1: String, param2: String) =
-                    HomeFragment().apply {
-                        arguments = Bundle().apply {
-                            putString(ARG_PARAM1, param1)
-                            putString(ARG_PARAM2, param2)
-                        }
+    fun drawerListener() {
+        binding.apply {
+            navigationView.setNavigationItemSelectedListener {
+                when (it.itemId) {
+                    R.id.menu_profile -> {
+                        parentFragmentManager.beginTransaction().replace(R.id.main_frame, ProfileFragment()).commit()
                     }
-
+                    R.id.menu_home-> {
+                        parentFragmentManager.beginTransaction().replace(R.id.main_frame, HomeFragment()).commit()
+                    }
+                    R.id.menu_saved-> {
+                        parentFragmentManager.beginTransaction().replace(R.id.main_frame, SavedBooksFragment()).commit()
+                    }
+                    R.id.menu_logout -> {
+                        val shared = SharedPreference.newInstance(requireContext())
+                        shared.setLoginData(mutableListOf())
+                        parentFragmentManager.beginTransaction().replace(R.id.main_frame, SignInFragment()).commit()
+                    }
+                }
+                drawer.closeDrawer(GravityCompat.START)
+                true
+            }
         }
-
-
+    }
 }
