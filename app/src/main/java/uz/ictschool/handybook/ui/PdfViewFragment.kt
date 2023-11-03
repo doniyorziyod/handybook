@@ -1,11 +1,21 @@
 package uz.ictschool.handybook.ui
 
+import android.os.AsyncTask
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.github.barteksc.pdfviewer.PDFView
 import uz.ictschool.handybook.R
+import uz.ictschool.handybook.databinding.ActivityMainBinding
+import uz.ictschool.handybook.databinding.FragmentPdfViewBinding
+import uz.ictschool.handybook.databinding.FragmentProfileBinding
+import java.io.BufferedInputStream
+import java.io.InputStream
+import java.net.HttpURLConnection
+import java.net.URL
+import javax.net.ssl.HttpsURLConnection
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -18,7 +28,9 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class PdfViewFragment : Fragment() {
-    // TODO: Rename and change types of parameters
+    lateinit var pdfView: PDFView
+    var pdfUrl = "https://unec.edu.az/application/uploads/2014/12/pdf-sample.pdf"
+
     private var param1: String? = null
     private var param2: String? = null
 
@@ -30,13 +42,61 @@ class PdfViewFragment : Fragment() {
         }
     }
 
+    lateinit var binding: FragmentPdfViewBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_pdf_view, container, false)
+        binding = FragmentPdfViewBinding.inflate(inflater, container, false)
+        binding.pdfview
+
+
+        return binding.root
     }
+    class RetrievePDFFromURL(pdfView: PDFView) :
+        AsyncTask<String, Void, InputStream>() {
+
+        // on below line we are creating a variable for our pdf view.
+        val mypdfView: PDFView = pdfView
+
+        // on below line we are calling our do in background method.
+        override fun doInBackground(vararg params: String?): InputStream? {
+            // on below line we are creating a variable for our input stream.
+            var inputStream: InputStream? = null
+            try {
+                // on below line we are creating an url
+                // for our url which we are passing as a string.
+                val url = URL(params.get(0))
+
+                // on below line we are creating our http url connection.
+                val urlConnection: HttpURLConnection = url.openConnection() as HttpsURLConnection
+
+                // on below line we are checking if the response
+                // is successful with the help of response code
+                // 200 response code means response is successful
+                if (urlConnection.responseCode == 200) {
+                    // on below line we are initializing our input stream
+                    // if the response is successful.
+                    inputStream = BufferedInputStream(urlConnection.inputStream)
+                }
+            }
+            // on below line we are adding catch block to handle exception
+            catch (e: Exception) {
+                // on below line we are simply printing
+                // our exception and returning null
+                e.printStackTrace()
+                return null;
+            }
+            // on below line we are returning input stream.
+            return inputStream;
+        }
+
+        override fun onPostExecute(result: InputStream?) {
+            // on below line we are loading url within our
+            // pdf view on below line using input stream.
+            mypdfView.fromStream(result).load()
+
+        }
 
     companion object {
         /**
@@ -57,4 +117,4 @@ class PdfViewFragment : Fragment() {
                 }
             }
     }
-}
+}}
