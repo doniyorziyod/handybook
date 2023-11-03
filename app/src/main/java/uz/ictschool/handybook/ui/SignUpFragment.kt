@@ -57,7 +57,7 @@ class SignUpFragment : Fragment() {
                             val a = mutableListOf<User>()
                             a.add(data)
                             mySharedPreferences.setLoginData(a)
-                            parentFragmentManager.beginTransaction().replace(R.id.main, HomeFragment()).commit()
+                            parentFragmentManager.beginTransaction().replace(R.id.main, DefaultFragment()).commit()
                         }
                         Log.d("TAG", "onResponse: ${response.body()}")
                     }

@@ -1,5 +1,6 @@
 package uz.ictschool.handybook.ui
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -26,6 +27,7 @@ class SplashFragment : Fragment() {
         }
     }
 
+    @SuppressLint("SuspiciousIndentation")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -62,7 +64,7 @@ class SplashFragment : Fragment() {
             })
 
         binding.login.setOnClickListener {
-            parentFragmentManager.beginTransaction().replace(R.id.main,HomeFragment()).commit()
+            parentFragmentManager.beginTransaction().replace(R.id.main,DefaultFragment()).commit()
         }
         binding.register.setOnClickListener {
             parentFragmentManager.beginTransaction().replace(R.id.main,SignUpFragment()).commit()
