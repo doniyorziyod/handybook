@@ -39,7 +39,7 @@ interface APIService {
 
 
     @POST("/comment-api/create")
-    fun giveCommentToTheBook(@Body commentData: uz.ictschool.handybook.data.CommentData):Call<uz.ictschool.handybook.data.CommentData>
+    fun giveCommentToTheBook(@Body commentData: uz.ictschool.handybook.data.CommentDataOrigin):Call<uz.ictschool.handybook.data.CommentData>
 
 
 

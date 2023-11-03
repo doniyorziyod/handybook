@@ -1,15 +1,20 @@
 package uz.ictschool.handybook.ui
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import uz.ictschool.handybook.R
 import uz.ictschool.handybook.api.APIClient
 import uz.ictschool.handybook.api.APIService
 import uz.ictschool.handybook.data.Book
 import uz.ictschool.handybook.data.CommentData
+import uz.ictschool.handybook.data.CommentDataOrigin
 import uz.ictschool.handybook.databinding.FragmentRatingBinding
 import uz.ictschool.handybook.services.SharedPreference
 
@@ -47,7 +52,22 @@ class RatingFragment : Fragment() {
         val user = shared.getLoginData()
         val api = APIClient.getInstance().create(APIService::class.java)
 
-//        api.giveCommentToTheBook()
+        binding.jonatish.setOnClickListener {
+            var commentData = CommentDataOrigin(book_id = param1!!.id, reyting = binding.ratingBar.rating.toInt(), text = binding.commentsss.text.toString(), user_id = user.get(0).id)
+
+
+            api.giveCommentToTheBook(commentData).enqueue(object :Callback<CommentData>{
+                override fun onResponse(call: Call<CommentData>, response: Response<CommentData>) {
+                    Log.d("TAG", "onResponse: ${response.body()}")
+                }
+
+                override fun onFailure(call: Call<CommentData>, t: Throwable) {
+                    Log.d("TAG", "onFailure: $t")
+                }
+
+            })
+        }
+
         binding.textView7.setText(param1!!.name+" romani sizga qanchalik manzur keldi?")
 
 
