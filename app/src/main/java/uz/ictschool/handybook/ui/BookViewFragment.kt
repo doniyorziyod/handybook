@@ -19,6 +19,7 @@ import uz.ictschool.handybook.api.APIService
 import uz.ictschool.handybook.data.Book
 import uz.ictschool.handybook.data.CategoryData
 import uz.ictschool.handybook.databinding.FragmentBookViewBinding
+import uz.ictschool.handybook.services.SharedPreference
 import kotlin.math.log
 
 
@@ -46,12 +47,16 @@ class BookViewFragment : Fragment() {
     }
 
 
+    lateinit var selectedBooks: MutableList<Book>
+    lateinit var mySharedPreferences: SharedPreference
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val binding = FragmentBookViewBinding.inflate(inflater, container, false)
-
+        mySharedPreferences = SharedPreference.newInstance(requireContext())
+        selectedBooks = mySharedPreferences.GetSelectedBooks()
         val api = APIClient.getInstance().create(APIService::class.java)
 //        val books = mutableListOf<Book>()
 
@@ -74,7 +79,12 @@ class BookViewFragment : Fragment() {
 
                 }, object : BookAdapter.OnSelected{
                     override fun onSelected(book: Book) {
-                        TODO("Not yet implemented")
+                        if (book in selectedBooks){
+                            selectedBooks.remove(book)
+                        }else{
+                            selectedBooks.add(book)
+                        }
+                        mySharedPreferences.SetSelectedBooks(selectedBooks)
                     }
                 })
 

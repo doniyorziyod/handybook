@@ -71,6 +71,8 @@ class BookAdapter(
                 notifyDataSetChanged()
             }else if(item.book_progress == 1){
                 holder.bookmarkIV.setImageResource(R.drawable.bookmark_icon)
+                item.book_progress = 0
+                notifyDataSetChanged()
             }
             onSelected.onSelected(item)
         }

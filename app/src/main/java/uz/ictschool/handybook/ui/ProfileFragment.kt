@@ -11,6 +11,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import uz.ictschool.handybook.R
+import uz.ictschool.handybook.adapter.CustomBooksList
 import uz.ictschool.handybook.api.APIClient
 import uz.ictschool.handybook.api.APIService
 import uz.ictschool.handybook.data.Book
@@ -40,6 +41,9 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentProfileBinding.inflate(inflater, container, false)
+
+        binding.profileSaqlanganKitoblarRecycler.adapter = CustomBooksList(requireContext())
+
 
         binding.profileBackToHome.setOnClickListener {
             parentFragmentManager.beginTransaction().replace(R.id.main, HomeFragment()).commit()

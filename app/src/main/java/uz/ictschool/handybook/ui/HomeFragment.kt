@@ -42,7 +42,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    lateinit var selectedProducts: MutableList<Book>
+    lateinit var selectedBooks: MutableList<Book>
     lateinit var mySharedPreferences: SharedPreference
     lateinit var currentcategory: String
     lateinit var binding: FragmentHomeBinding
@@ -55,7 +55,7 @@ class HomeFragment : Fragment() {
 
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         mySharedPreferences = SharedPreference.newInstance(requireContext())
-        selectedProducts = mySharedPreferences.GetSelectedBooks()
+        selectedBooks = mySharedPreferences.GetSelectedBooks()
         binding.imageView2.setOnClickListener {
             parentFragmentManager.beginTransaction().replace(R.id.main, ProfileFragment()).commit()
         }
@@ -124,7 +124,12 @@ class HomeFragment : Fragment() {
                                                         }
                                                     }, object : BookAdapter.OnSelected{
                                                         override fun onSelected(book: Book) {
-                                                            TODO("Not yet implemented")
+                                                            if (book in selectedBooks){
+                                                                selectedBooks.remove(book)
+                                                            }else{
+                                                                selectedBooks.add(book)
+                                                            }
+                                                            mySharedPreferences.SetSelectedBooks(selectedBooks)
                                                         }
                                                     })
                                                 Log.d(
@@ -164,7 +169,12 @@ class HomeFragment : Fragment() {
 
                                                             }, object : BookAdapter.OnSelected{
                                                                 override fun onSelected(book: Book) {
-                                                                    TODO("Not yet implemented")
+                                                                    if (book in selectedBooks){
+                                                                        selectedBooks.remove(book)
+                                                                    }else{
+                                                                        selectedBooks.add(book)
+                                                                    }
+                                                                    mySharedPreferences.SetSelectedBooks(selectedBooks)
                                                                 }
                                                             })
                                                     } else {
@@ -222,7 +232,12 @@ class HomeFragment : Fragment() {
 
                     }, object : BookAdapter.OnSelected{
                       override fun onSelected(book: Book) {
-                          TODO("Not yet implemented")
+                          if (book in selectedBooks){
+                              selectedBooks.remove(book)
+                          }else{
+                              selectedBooks.add(book)
+                          }
+                          mySharedPreferences.SetSelectedBooks(selectedBooks)
                       }
                   })
 
@@ -264,7 +279,12 @@ class HomeFragment : Fragment() {
 
                                 }, object : BookAdapter.OnSelected{
                                     override fun onSelected(book: Book) {
-                                        TODO("Not yet implemented")
+                                        if (book in selectedBooks){
+                                            selectedBooks.remove(book)
+                                        }else{
+                                            selectedBooks.add(book)
+                                        }
+                                        mySharedPreferences.SetSelectedBooks(selectedBooks)
                                     }
                                 })
                                 binding.booksRv.visibility = View.VISIBLE
