@@ -1,5 +1,7 @@
 package farrukh.remotely.adapter
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,17 +13,16 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import uz.ictschool.handybook.R
 import uz.ictschool.handybook.data.Book
+import uz.ictschool.handybook.services.SharedPreference
 
 class BookAdapter(
     var array: MutableList<Book>,
-    var listener: ItemClick
+    var listener: ItemClick, var onSelected: OnSelected
 ) : RecyclerView.Adapter<BookAdapter.MyHolder>() {
-
     class MyHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
 
         val name:TextView = itemView.findViewById(R.id.book_item_title)
-//        val audio:ImageView = itemView.findViewById(R.id.book_item_audio)
         val author:TextView = itemView.findViewById(R.id.book_item_author)
         val rating:TextView = itemView.findViewById(R.id.book_item_rating)
         val img:ImageView = itemView.findViewById(R.id.book_item_image_iv)
@@ -33,7 +34,7 @@ class BookAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyHolder {
-        var view =
+        val view =
             LayoutInflater.from(parent.context).inflate(R.layout.book_item, parent, false)
         return MyHolder(view)
     }
@@ -42,6 +43,7 @@ class BookAdapter(
         return array.size
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onBindViewHolder(holder: MyHolder, position: Int) {
 
         val item = array.get(position)
@@ -51,15 +53,36 @@ class BookAdapter(
         holder.author.text = item.author
         holder.img.load(item.image)
 
+        if (item.book_progress == 1){
+            holder.bookmarkIV.setImageResource(R.drawable.book_marked_true)
+        }
+        if (item.book_progress == 0){
+            holder.bookmarkIV.setImageResource(R.drawable.bookmark_icon)
+        }
 
         holder.layout.setOnClickListener {
             listener.OnItemClick(item)
+        }
+
+        holder.bookmarkIV.setOnClickListener {
+            if (item.book_progress == 0){
+                holder.bookmarkIV.setImageResource(R.drawable.book_marked_true)
+                item.book_progress = 1
+                notifyDataSetChanged()
+            }else if(item.book_progress == 1){
+                holder.bookmarkIV.setImageResource(R.drawable.bookmark_icon)
+            }
+            onSelected.onSelected(item)
         }
 
     }
 
     interface ItemClick {
         fun OnItemClick(book: Book)
+    }
+
+    interface OnSelected{
+        fun onSelected(book: Book)
     }
 
 }

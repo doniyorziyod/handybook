@@ -16,5 +16,6 @@ data class Book(
     val reyting: Int,
     val status: Int,
     val type_id: Int,
-    val year: String
+    val year: String,
+    var book_progress: Int = 0
 ):Serializable

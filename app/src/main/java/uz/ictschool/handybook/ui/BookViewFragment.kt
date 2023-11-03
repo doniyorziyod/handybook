@@ -72,6 +72,10 @@ class BookViewFragment : Fragment() {
                             .commit()
                     }
 
+                }, object : BookAdapter.OnSelected{
+                    override fun onSelected(book: Book) {
+                        TODO("Not yet implemented")
+                    }
                 })
 
                 binding.tavsiyalar.adapter = adapter

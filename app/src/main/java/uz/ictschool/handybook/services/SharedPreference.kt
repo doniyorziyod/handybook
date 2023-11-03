@@ -3,6 +3,7 @@ package uz.ictschool.handybook.services
 import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import uz.ictschool.handybook.data.Book
 import uz.ictschool.handybook.data.User
 
 class SharedPreference private constructor(context: Context){
@@ -30,6 +31,43 @@ class SharedPreference private constructor(context: Context){
         }
         val typeToken = object : TypeToken<MutableList<User>>(){}.type
         return gson.fromJson(data, typeToken)
+    }
+
+
+    fun GetSelectedBooks(): MutableList<Book>{
+        val data: String = sharedPreferences.getString("Selected", "")!!
+        if (data == ""){
+            return mutableListOf()
+        }
+        val typeToken = object : TypeToken<MutableList<Book>>(){}.type
+        return gson.fromJson(data, typeToken)
+    }
+    fun SetSelectedBooks(mutableList: MutableList<Book>){
+        edit.putString("Selected", gson.toJson(mutableList)).apply()
+    }
+
+    fun getInProgressBook(): MutableList<Book>{
+        val data: String = sharedPreferences.getString("InProgress", "")!!
+        if (data == ""){
+            return mutableListOf()
+        }
+        val typeToken = object : TypeToken<MutableList<Book>>(){}.type
+        return gson.fromJson(data, typeToken)
+    }
+    fun setInProgressBook(mutableList: MutableList<Book>){
+        edit.putString("InProgress", gson.toJson(mutableList)).apply()
+    }
+
+    fun getFinishedBook(): MutableList<Book>{
+        val data: String = sharedPreferences.getString("Finished", "")!!
+        if (data == ""){
+            return mutableListOf()
+        }
+        val typeToken = object : TypeToken<MutableList<Book>>(){}.type
+        return gson.fromJson(data, typeToken)
+    }
+    fun setFinishedBook(mutableList: MutableList<Book>){
+        edit.putString("Finished", gson.toJson(mutableList)).apply()
     }
 
 }

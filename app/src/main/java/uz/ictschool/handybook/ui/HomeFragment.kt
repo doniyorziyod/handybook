@@ -22,6 +22,7 @@ import uz.ictschool.handybook.api.APIService
 import uz.ictschool.handybook.data.Book
 import uz.ictschool.handybook.data.CategoryData
 import uz.ictschool.handybook.databinding.FragmentHomeBinding
+import uz.ictschool.handybook.services.SharedPreference
 import kotlin.math.log
 
 private const val ARG_PARAM1 = "param1"
@@ -40,6 +41,8 @@ class HomeFragment : Fragment() {
         }
     }
 
+    lateinit var selectedProducts: MutableList<Book>
+    lateinit var mySharedPreferences: SharedPreference
     lateinit var currentcategory: String
     lateinit var binding: FragmentHomeBinding
     override fun onCreateView(
@@ -50,7 +53,8 @@ class HomeFragment : Fragment() {
 
 
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-
+        mySharedPreferences = SharedPreference.newInstance(requireContext())
+        selectedProducts = mySharedPreferences.GetSelectedBooks()
         binding.imageView2.setOnClickListener {
             parentFragmentManager.beginTransaction().replace(R.id.main, ProfileFragment()).commit()
         }
@@ -115,6 +119,10 @@ class HomeFragment : Fragment() {
                                                                     BookViewFragment.newInstance(book)
                                                                 ).commit()
                                                         }
+                                                    }, object : BookAdapter.OnSelected{
+                                                        override fun onSelected(book: Book) {
+                                                            TODO("Not yet implemented")
+                                                        }
                                                     })
                                                 Log.d(
                                                     TAG,
@@ -151,6 +159,10 @@ class HomeFragment : Fragment() {
                                                                         ).commit()
                                                                 }
 
+                                                            }, object : BookAdapter.OnSelected{
+                                                                override fun onSelected(book: Book) {
+                                                                    TODO("Not yet implemented")
+                                                                }
                                                             })
                                                     } else {
 //                                                        binding.booksRv.visibility = View.GONE
@@ -205,7 +217,11 @@ class HomeFragment : Fragment() {
                                 .commit()
                         }
 
-                    })
+                    }, object : BookAdapter.OnSelected{
+                      override fun onSelected(book: Book) {
+                          TODO("Not yet implemented")
+                      }
+                  })
 
                 binding.booksRv.visibility = View.VISIBLE
 
@@ -243,6 +259,10 @@ class HomeFragment : Fragment() {
 
                                     }
 
+                                }, object : BookAdapter.OnSelected{
+                                    override fun onSelected(book: Book) {
+                                        TODO("Not yet implemented")
+                                    }
                                 })
                                 binding.booksRv.visibility = View.VISIBLE
 //                                binding.booksRv.visibility = View.GONE
