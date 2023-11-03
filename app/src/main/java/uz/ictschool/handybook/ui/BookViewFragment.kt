@@ -57,6 +57,9 @@ class BookViewFragment : Fragment() {
         val binding = FragmentBookViewBinding.inflate(inflater, container, false)
         mySharedPreferences = SharedPreference.newInstance(requireContext())
         selectedBooks = mySharedPreferences.GetSelectedBooks()
+        binding.pdfViewBtn.setOnClickListener {
+            parentFragmentManager.beginTransaction().replace(R.id.main,PdfViewFragment()).commit()
+        }
         val api = APIClient.getInstance().create(APIService::class.java)
 //        val books = mutableListOf<Book>()
 

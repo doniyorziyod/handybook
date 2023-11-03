@@ -1,7 +1,9 @@
 package uz.ictschool.handybook.ui
 
+import android.graphics.pdf.PdfDocument
 import android.os.AsyncTask
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -29,7 +31,7 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class PdfViewFragment : Fragment() {
-    lateinit var pdfView: PDFView
+//    lateinit var pdfView: PdfDocument
 
 
     private var param1: Book? = null
@@ -44,6 +46,7 @@ class PdfViewFragment : Fragment() {
     }
 
     lateinit var binding: FragmentPdfViewBinding
+    @Suppress("DEPRECATION")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -53,7 +56,7 @@ class PdfViewFragment : Fragment() {
 //
 //        var pdfUrl = param1!!.file
 
-        RetrievePDFFromURL(binding.idPDFView).execute(param1!!.file)
+        RetrievePDFFromURL(binding.idPDFView).execute("http://b1.culture.ru/c/98010/idiot.pdf")
 
         // on below line we are calling our async
         // task to load our pdf file from url.

@@ -8,6 +8,7 @@
 
 
 
+
     <com.github.barteksc.pdfviewer.PDFView
         android:id="@+id/idPDFView"
         android:layout_width="match_parent"
