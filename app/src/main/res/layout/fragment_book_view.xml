@@ -36,8 +36,8 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/back"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_gravity="start"
                     android:background="@drawable/back_ic"
                     app:backgroundTint="@color/white" />
@@ -50,12 +50,12 @@
                     android:text="Batafsil"
                     android:textColor="@color/white"
 
-                    android:textSize="33dp" />
+                    android:textSize="25dp" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/book_mark"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_gravity="end"
                     android:background="@drawable/bookmark_icon"
                     app:backgroundTint="@color/white" />
@@ -119,20 +119,44 @@
                 app:layout_constraintStart_toStartOf="@+id/description"
                 app:layout_constraintTop_toBottomOf="@+id/description" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/comment_btn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="16dp"
-                android:backgroundTint="@color/light_blue"
-                android:fontFamily="@font/montserratsemibold"
-                android:text="Comments and add new comment"
-                android:textColor="@color/back_blue"
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/linearLayoutCompat"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:orientation="horizontal"
+                android:weightSum="2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tavsiyalar" />
+                app:layout_constraintTop_toBottomOf="@+id/tavsiyalar">
 
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/comment_btn"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:backgroundTint="@color/light_blue"
+                    android:fontFamily="@font/montserratsemibold"
+                    android:text="Comments and add new comment"
+                    android:textColor="@color/back_blue"
+                    tools:layout_editor_absoluteX="91dp"
+                    tools:layout_editor_absoluteY="621dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/pdf_view_btn"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:backgroundTint="@color/light_blue"
+                    android:fontFamily="@font/montserratsemibold"
+                    android:text="Read this book now"
+                    android:textColor="@color/back_blue"
+                    tools:layout_editor_absoluteX="16dp"
+                    tools:layout_editor_absoluteY="656dp" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
