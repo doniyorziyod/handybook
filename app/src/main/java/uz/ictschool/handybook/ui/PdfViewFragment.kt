@@ -49,16 +49,17 @@ class PdfViewFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentPdfViewBinding.inflate(inflater, container, false)
-        pdfView = binding.idPDFView
+//        pdfView = binding.idPDFView
+//
+//        var pdfUrl = param1!!.file
 
-        var pdfUrl = "https://unec.edu.az/application/uploads/2014/12/pdf-sample.pdf"
-        RetrievePDFFromURL(pdfView).execute(pdfUrl)
+        RetrievePDFFromURL(binding.idPDFView).execute(param1!!.file)
 
         // on below line we are calling our async
         // task to load our pdf file from url.
         // we are also passing our pdf view to
         // it along with pdf view url.
-        RetrievePDFFromURL(pdfView).execute(param1!!.file)
+
 
 
         return binding.root
@@ -67,7 +68,7 @@ class PdfViewFragment : Fragment() {
         AsyncTask<String, Void, InputStream>() {
 
         // on below line we are creating a variable for our pdf view.
-        val mypdfView: PDFView = pdfView
+        var mypdfView: PDFView = pdfView
 
         // on below line we are calling our do in background method.
         override fun doInBackground(vararg params: String?): InputStream? {
