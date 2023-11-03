@@ -7,10 +7,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import uz.ictschool.handybook.R
+import uz.ictschool.handybook.data.Comment
 import uz.ictschool.handybook.data.CommentData
 
 class CommentAdapter(
-    var array: MutableList<CommentData>,
+    var array: MutableList<Comment>,
 
     ) : RecyclerView.Adapter<CommentAdapter.MyHolder>() {
 
@@ -37,8 +38,8 @@ class CommentAdapter(
 
         val item = array.get(position)
 
-        holder.rating.text = item.text
-        holder.userName.text = item.user_id
+//        holder.rating.text = item.
+        holder.userName.text = item.username
         holder.comment_body.text = item.text
 
     }

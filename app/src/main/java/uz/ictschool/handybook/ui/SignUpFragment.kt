@@ -15,6 +15,7 @@ import uz.ictschool.handybook.R
 import uz.ictschool.handybook.api.APIClient
 import uz.ictschool.handybook.api.APIService
 import uz.ictschool.handybook.data.User
+import uz.ictschool.handybook.data.UserToken
 import uz.ictschool.handybook.databinding.FragmentSignUpBinding
 import uz.ictschool.handybook.services.SharedPreference
 import java.util.regex.Pattern
@@ -47,22 +48,22 @@ class SignUpFragment : Fragment() {
             val data = checkRegistrationInfo(binding.signupIsm.text.toString(), binding.signupUsernameEditAcet.text.toString(),
                 binding.signupEmailEditAcet.text.toString(), binding.signupPasswordEditAcet.text.toString(), binding.signupReenterPasswordEditAcet.text.toString())
             if (data != null){
-                api.register(data).enqueue(object : Callback<User>{
-                    override fun onResponse(call: Call<User>, response: Response<User>) {
+                api.register(data).enqueue(object : Callback<UserToken>{
+                    override fun onResponse(call: Call<UserToken>, response: Response<UserToken>) {
 //                        binding.signupUsernameEditAcet.error = "fgsdfgsdfgds"
                         if (response.code() == 422){
                             binding.signupUsernameEditAcet.error = "Bunday username band"
                         }
                         if (response.isSuccessful && response.code() == 200){
-                            val a = mutableListOf<User>()
-                            a.add(data)
+                            val a = mutableListOf<UserToken>()
+                            a.add(response.body()!!)
                             mySharedPreferences.setLoginData(a)
                             parentFragmentManager.beginTransaction().replace(R.id.main, DefaultFragment()).commit()
                         }
                         Log.d("TAG", "onResponse: ${response.body()}")
                     }
 
-                    override fun onFailure(call: Call<User>, t: Throwable) {
+                    override fun onFailure(call: Call<UserToken>, t: Throwable) {
                         Log.d("Register TAG", "onFailure: $t")
                     }
 

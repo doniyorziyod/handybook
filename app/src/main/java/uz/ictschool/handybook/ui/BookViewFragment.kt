@@ -89,7 +89,7 @@ class BookViewFragment : Fragment() {
         })
 
         binding.commentBtn.setOnClickListener {
-            parentFragmentManager.beginTransaction().replace(R.id.main,CommentFragment()).commit()
+            parentFragmentManager.beginTransaction().replace(R.id.main,CommentFragment.newInstance(param1!!)).commit()
         }
 
 

@@ -5,6 +5,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import uz.ictschool.handybook.data.Book
 import uz.ictschool.handybook.data.User
+import uz.ictschool.handybook.data.UserToken
 
 class SharedPreference private constructor(context: Context){
     val sharedPreferences = context.getSharedPreferences("data", 0)
@@ -21,15 +22,15 @@ class SharedPreference private constructor(context: Context){
         }
     }
 
-    fun setLoginData(mutableList: MutableList<User>){
+    fun setLoginData(mutableList: MutableList<UserToken>){
         edit.putString("Login", gson.toJson(mutableList)).apply()
     }
-    fun getLoginData(): MutableList<User>{
+    fun getLoginData(): MutableList<UserToken>{
         val data: String = sharedPreferences.getString("Login", "")!!
         if (data == ""){
             return mutableListOf()
         }
-        val typeToken = object : TypeToken<MutableList<User>>(){}.type
+        val typeToken = object : TypeToken<MutableList<UserToken>>(){}.type
         return gson.fromJson(data, typeToken)
     }
 

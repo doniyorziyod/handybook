@@ -9,6 +9,7 @@ import uz.ictschool.handybook.data.Book
 import uz.ictschool.handybook.data.CategoryData
 import uz.ictschool.handybook.data.User
 import uz.ictschool.handybook.data.LoginDetails
+import uz.ictschool.handybook.data.UserToken
 
 
 interface APIService {
@@ -16,10 +17,10 @@ interface APIService {
     fun getAllBooks(): Call<List<Book>>
 
     @POST("/book-api/login")
-    fun login(@Body loginDetails: LoginDetails): Call<User>
+    fun login(@Body loginDetails: LoginDetails): Call<UserToken>
 
     @POST("/book-api/register")
-    fun register(@Body user: User): Call<User>
+    fun register(@Body user: User): Call<UserToken>
 
     @GET("/book-api/all-category")
     fun getAllCategory():Call<List<CategoryData>>
@@ -34,7 +35,7 @@ interface APIService {
     fun getMainBook():Call<Book>
 
     @GET("/book-api/comment")
-    fun getAllComments(@Query("id") id: Int):Call<List<uz.ictschool.handybook.data.CommentData>>
+    fun getAllComments(@Query("id") id: Int):Call<List<uz.ictschool.handybook.data.Comment>>
 
 
     @POST("/comment-api/create")
