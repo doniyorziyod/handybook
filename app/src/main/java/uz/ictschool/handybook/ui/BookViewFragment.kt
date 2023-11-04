@@ -119,7 +119,7 @@ class BookViewFragment : Fragment() {
             mySharedPreferences.setThisBook(book!!)
         }
 
-
+        binding.back.setOnClickListener { parentFragmentManager.beginTransaction().replace(R.id.main, HomeFragment()).commit() }
         return binding.root
     }
 

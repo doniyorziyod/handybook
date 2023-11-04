@@ -44,10 +44,6 @@ class BookAudioFragment : Fragment() {
         mySharedPreferences = SharedPreference.newInstance(requireContext())
         val book = mySharedPreferences.getThisBook()
         binding.bookImg.load(book[0].image)
-        binding.back.setOnClickListener {
-            mySharedPreferences.setThisBook(book)
-            parentFragmentManager.beginTransaction().replace(R.id.main, BookViewFragment()).commit()
-        }
         Log.d("AUDIO", "onCreateView: ${book.get(0)}")
         binding.play.setOnClickListener {
             binding.pause.visibility = View.VISIBLE
@@ -67,7 +63,6 @@ class BookAudioFragment : Fragment() {
             initializeSeekBar()
             Toast.makeText(requireContext(), "Audio started playing..", Toast.LENGTH_SHORT).show()
         }
-
         binding.pause.setOnClickListener {
             binding.play.visibility = View.VISIBLE
             binding.pause.visibility = View.GONE
@@ -79,12 +74,22 @@ class BookAudioFragment : Fragment() {
                     media.setDataSource("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3")
                 }
                 media.prepare()
-                media.pause()
+                media.stop()
             } catch (e: Exception) {
                 e.printStackTrace()
             }
             initializeSeekBar()
             Toast.makeText(requireContext(), "Audio stopped playing..", Toast.LENGTH_SHORT).show()
+        }
+        binding.back.setOnClickListener {
+            mySharedPreferences.setThisBook(book)
+            parentFragmentManager.beginTransaction().replace(R.id.main, BookViewFragment()).commit()
+            media.stop()
+        }
+        binding.ekitob.setOnClickListener {
+            mySharedPreferences.setThisBook(book)
+            parentFragmentManager.beginTransaction().replace(R.id.main, BookViewFragment()).commit()
+            media.stop()
         }
         return binding.root
     }
@@ -94,24 +99,16 @@ class BookAudioFragment : Fragment() {
 
         runnable = Runnable {
             binding.seek.progress = media.currentSeconds
-
-//            binding.tvPass.text = "${mediaPlayer.currentSeconds} sec"
-//            val diff = mediaPlayer.seconds - mediaPlayer.currentSeconds
-//            binding.tvDue.text = "$diff sec"
-//
             handler.postDelayed(runnable, 1000)
         }
         handler.postDelayed(runnable, 1000)
     }
 
-
-    // Creating an extension property to get the media player time duration in seconds
     val MediaPlayer.seconds: Int
         get() {
             return this.duration / 1000
         }
 
-    // Creating an extension property to get media player current position in seconds
     val MediaPlayer.currentSeconds: Int
         get() {
             return this.currentPosition / 1000
