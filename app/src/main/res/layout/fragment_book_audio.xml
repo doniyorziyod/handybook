@@ -100,7 +100,24 @@
         app:layout_constraintVertical_bias="0.375" />
 
     <androidx.appcompat.widget.AppCompatSeekBar
+        android:id="@+id/seek"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/playpause"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:backgroundTint="@color/back_blue"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/seek"
+        android:background="@drawable/icon_pause"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

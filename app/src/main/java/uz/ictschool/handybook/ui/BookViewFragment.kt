@@ -113,6 +113,7 @@ class BookViewFragment : Fragment() {
         }
 
 
+        binding.audiokitob.setOnClickListener { parentFragmentManager.beginTransaction().replace(R.id.main, BookAudioFragment.newInstance(param1!!)).commit() }
 
 
         return binding.root
