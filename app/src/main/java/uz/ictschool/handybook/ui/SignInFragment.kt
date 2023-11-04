@@ -2,18 +2,19 @@ package uz.ictschool.handybook.ui
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.create
 import uz.ictschool.handybook.R
 import uz.ictschool.handybook.api.APIClient
 import uz.ictschool.handybook.api.APIService
+import uz.ictschool.handybook.data.LoginDetails
+import uz.ictschool.handybook.data.UserToken
 import uz.ictschool.handybook.databinding.FragmentSignInBinding
 
 private const val ARG_PARAM1 = "param1"
@@ -32,7 +33,34 @@ class SignInFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = FragmentSignInBinding.inflate(inflater,container,false)
+        val binding = FragmentSignInBinding.inflate(inflater, container, false)
+
+        binding.register.setOnClickListener {
+            parentFragmentManager.beginTransaction().replace(R.id.main, SignUpFragment())
+                .addToBackStack("SignIN").commit()
+        }
+
+        val api = APIClient.getInstance().create(APIService::class.java)
+
+        val user =
+            LoginDetails(binding.loginOrg.text.toString(), binding.passwordOrg.text.toString())
+
+
+        api.login(user).enqueue(object : Callback<UserToken> {
+            override fun onResponse(call: Call<UserToken>, response: Response<UserToken>) {
+                if (response.body() == null){
+                    Toast.makeText(requireContext(), "password or username is incorrect ! please try again", Toast.LENGTH_SHORT).show()
+                }
+                parentFragmentManager.beginTransaction().replace(R.id.main,HomeFragment()).commit()
+            }
+
+            override fun onFailure(call: Call<UserToken>, t: Throwable) {
+                Log.d("TAG", "onFailure: $t")
+
+            }
+
+        })
+
 //        helper =Helper.getInstance(requireContext())
 
 
