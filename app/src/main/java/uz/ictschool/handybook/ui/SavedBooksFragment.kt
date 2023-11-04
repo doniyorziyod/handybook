@@ -5,8 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import uz.ictschool.handybook.R
+import uz.ictschool.handybook.adapter.SavedAdapter
+import uz.ictschool.handybook.data.Book
 import uz.ictschool.handybook.databinding.FragmentSavedBooksBinding
+import uz.ictschool.handybook.services.SharedPreference
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -29,6 +33,19 @@ class SavedBooksFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentSavedBooksBinding.inflate(inflater, container, false)
+        var myshared = SharedPreference.newInstance(requireContext())
+
+        binding.savedRecycler.adapter = SavedAdapter(requireContext(), object : SavedAdapter.OnClicked{
+            override fun onClicked(book: Book) {
+                parentFragmentManager.beginTransaction().replace(R.id.main, BookViewFragment.newInstance(book)).commit()
+            }
+        })
+        binding.savedRecycler.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+
+        binding.savedBackToHome.setOnClickListener {
+            parentFragmentManager.beginTransaction().replace(R.id.main, DefaultFragment()).commit()
+        }
+
         return binding.root
     }
 

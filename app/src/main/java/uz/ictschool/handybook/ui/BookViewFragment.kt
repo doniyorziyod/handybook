@@ -61,7 +61,6 @@ class BookViewFragment : Fragment() {
         }
         val api = APIClient.getInstance().create(APIService::class.java)
 //        val books = mutableListOf<Book>()
-        param1 = mySharedPreferences.getThisBook()[0]
         binding.appCompatImageView.load(param1!!.image)
         binding.textView5.setText(param1!!.name)
         binding.description.setText(param1!!.description)
@@ -96,7 +95,14 @@ class BookViewFragment : Fragment() {
         }
         binding.pdfViewBtn.setOnClickListener{
             param1!!.book_in_progress = 1
-            inProgressBook.add(param1!!)
+            if (inProgressBook.isNotEmpty()){
+                if (param1 !in inProgressBook){
+                    inProgressBook.add(param1!!)
+                }
+            }else{
+                inProgressBook.add(param1!!)
+            }
+
             mySharedPreferences.setInProgressBook(inProgressBook)
             parentFragmentManager.beginTransaction().replace(R.id.main,PdfViewFragment.RetrievePDFFromURL.newInstance(param1!!)).commit()
         }

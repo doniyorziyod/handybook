@@ -83,4 +83,16 @@ class SharedPreference private constructor(context: Context){
         edit.putString("Finished", gson.toJson(mutableList)).apply()
     }
 
+//    fun setNavBar(mutableList: MutableList<String>){
+//        edit.putString("NavBar", gson.toJson(mutableList)).apply()
+//    }
+//    fun getNavBar(): MutableList<String>{
+//        val data: String = sharedPreferences.getString("NavBar", "")!!
+//        if (data == ""){
+//            return mutableListOf()
+//        }
+//        val typeToken = object : TypeToken<MutableList<String>>(){}.type
+//        return gson.fromJson(data, typeToken)
+//    }
+
 }

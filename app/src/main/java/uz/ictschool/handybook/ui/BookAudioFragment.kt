@@ -83,12 +83,12 @@ class BookAudioFragment : Fragment() {
         }
         binding.back.setOnClickListener {
             mySharedPreferences.setThisBook(book)
-            parentFragmentManager.beginTransaction().replace(R.id.main, BookViewFragment()).commit()
+            parentFragmentManager.beginTransaction().replace(R.id.main, BookViewFragment.newInstance(book[0])).commit()
             media.stop()
         }
         binding.ekitob.setOnClickListener {
             mySharedPreferences.setThisBook(book)
-            parentFragmentManager.beginTransaction().replace(R.id.main, BookViewFragment()).commit()
+            parentFragmentManager.beginTransaction().replace(R.id.main, BookViewFragment.newInstance(book[0])).commit()
             media.stop()
         }
         return binding.root

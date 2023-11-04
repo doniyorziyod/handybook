@@ -12,6 +12,8 @@ import androidx.fragment.app.Fragment
 import okhttp3.internal.wait
 import uz.ictschool.handybook.R
 import uz.ictschool.handybook.databinding.FragmentSplashBinding
+import uz.ictschool.handybook.services.SharedPreference
+
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
@@ -33,7 +35,7 @@ class SplashFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val binding = FragmentSplashBinding.inflate(inflater, container, false)
-
+        var shared = SharedPreference.newInstance(requireContext())
         var shake = AnimationUtils.loadAnimation(requireContext(), R.anim.shake)
         val replenish = AnimationUtils.loadAnimation(requireContext(), R.anim.replenish)
         val dissapear = AnimationUtils.loadAnimation(requireContext(), R.anim.dissappear)
@@ -64,7 +66,12 @@ class SplashFragment : Fragment() {
             })
 
         binding.login.setOnClickListener {
-            parentFragmentManager.beginTransaction().replace(R.id.main,DefaultFragment()).commit()
+            if (shared.getLoginData().isNotEmpty()){
+                parentFragmentManager.beginTransaction().replace(R.id.main,DefaultFragment()).commit()
+            }else{
+                parentFragmentManager.beginTransaction().replace(R.id.main,SignInFragment()).commit()
+            }
+
         }
         binding.register.setOnClickListener {
             parentFragmentManager.beginTransaction().replace(R.id.main,SignUpFragment()).commit()

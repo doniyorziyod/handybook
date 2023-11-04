@@ -149,6 +149,8 @@ class HomeFragment : Fragment() {
                                                 ) {
                                                     if (response.body()?.isNotEmpty()!!) {
                                                         binding.booksRv.visibility = View.VISIBLE
+                                                        binding.faruhhatosi.visibility = View.GONE
+
 
                                                         binding.booksRv.adapter = BookAdapter(
                                                             response.body()!!.toMutableList(),
@@ -163,8 +165,8 @@ class HomeFragment : Fragment() {
 
                                                             }, requireContext())
                                                     } else {
-//                                                        binding.booksRv.visibility = View.GONE
-                                                        binding.booksRv.visibility = View.VISIBLE
+                                                        binding.faruhhatosi.visibility = View.VISIBLE
+                                                        binding.booksRv.visibility = View.GONE
                                                     }
                                                     Log.d(
                                                         TAG,
@@ -300,7 +302,7 @@ class HomeFragment : Fragment() {
                     R.id.menu_logout -> {
                         val shared = SharedPreference.newInstance(requireContext())
                         shared.setLoginData(mutableListOf())
-                        parentFragmentManager.beginTransaction().replace(R.id.main_frame, SignInFragment()).commit()
+                        parentFragmentManager.beginTransaction().replace(R.id.main, SignInFragment()).commit()
                     }
                 }
                 drawer.closeDrawer(GravityCompat.START)

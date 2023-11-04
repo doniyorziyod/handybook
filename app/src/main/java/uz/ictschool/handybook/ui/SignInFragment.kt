@@ -46,20 +46,24 @@ class SignInFragment : Fragment() {
             LoginDetails(binding.loginOrg.text.toString(), binding.passwordOrg.text.toString())
 
 
-        api.login(user).enqueue(object : Callback<UserToken> {
-            override fun onResponse(call: Call<UserToken>, response: Response<UserToken>) {
-                if (response.body() == null){
-                    Toast.makeText(requireContext(), "password or username is incorrect ! please try again", Toast.LENGTH_SHORT).show()
+        binding.continueBtn.setOnClickListener {
+            api.login(user).enqueue(object : Callback<UserToken> {
+                override fun onResponse(call: Call<UserToken>, response: Response<UserToken>) {
+                    if (response.body() == null){
+                        Toast.makeText(requireContext(), "password or username is incorrect ! please try again", Toast.LENGTH_SHORT).show()
+                    }
+                    else{
+                    parentFragmentManager.beginTransaction().replace(R.id.main,HomeFragment()).commit()
+                }}
+
+                override fun onFailure(call: Call<UserToken>, t: Throwable) {
+                    Log.d("TAG", "onFailure: $t")
+
                 }
-                parentFragmentManager.beginTransaction().replace(R.id.main,HomeFragment()).commit()
-            }
 
-            override fun onFailure(call: Call<UserToken>, t: Throwable) {
-                Log.d("TAG", "onFailure: $t")
+            })
+        }
 
-            }
-
-        })
 
 //        helper =Helper.getInstance(requireContext())
 

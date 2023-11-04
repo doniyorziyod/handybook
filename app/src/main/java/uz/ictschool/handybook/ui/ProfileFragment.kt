@@ -57,6 +57,10 @@ class ProfileFragment : Fragment() {
             }
         })
 
+        binding.inReadingCount.text = inProgressBooks.size.toString()
+        binding.outReadingCount.text = finishedBooks.size.toString()
+        binding.savedReadingCount.text = selectedBooks.size.toString()
+
         binding.profileOqilayotganKitoblarRecycler.adapter = CustomBooksList(inProgressBooks, object : CustomBooksList.OnClick{
             override fun onClick(book: Book) {
                 parentFragmentManager.beginTransaction().replace(R.id.main, BookViewFragment.newInstance(book)).commit()
