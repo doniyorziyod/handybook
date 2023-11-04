@@ -46,7 +46,7 @@ class BookViewFragment : Fragment() {
         }
     }
 
-
+    lateinit var inProgressBook: MutableList<Book>
     lateinit var selectedBooks: MutableList<Book>
     lateinit var mySharedPreferences: SharedPreference
 
@@ -57,6 +57,7 @@ class BookViewFragment : Fragment() {
         val binding = FragmentBookViewBinding.inflate(inflater, container, false)
         mySharedPreferences = SharedPreference.newInstance(requireContext())
         selectedBooks = mySharedPreferences.GetSelectedBooks()
+        inProgressBook = mySharedPreferences.getInProgressBook()
         binding.pdfViewBtn.setOnClickListener {
             parentFragmentManager.beginTransaction().replace(R.id.main,PdfViewFragment()).commit()
         }
@@ -105,6 +106,9 @@ class BookViewFragment : Fragment() {
             parentFragmentManager.beginTransaction().replace(R.id.main,CommentFragment.newInstance(param1!!)).commit()
         }
         binding.pdfViewBtn.setOnClickListener{
+            param1!!.book_in_progress = 1
+            inProgressBook.add(param1!!)
+            mySharedPreferences.setInProgressBook(inProgressBook)
             parentFragmentManager.beginTransaction().replace(R.id.main,PdfViewFragment.RetrievePDFFromURL.newInstance(param1!!)).commit()
         }
 

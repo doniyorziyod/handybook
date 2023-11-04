@@ -8,12 +8,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.github.barteksc.pdfviewer.PDFView
 import uz.ictschool.handybook.R
 import uz.ictschool.handybook.data.Book
 import uz.ictschool.handybook.databinding.ActivityMainBinding
 import uz.ictschool.handybook.databinding.FragmentPdfViewBinding
 import uz.ictschool.handybook.databinding.FragmentProfileBinding
+import uz.ictschool.handybook.services.SharedPreference
 import java.io.BufferedInputStream
 import java.io.InputStream
 import java.net.HttpURLConnection
@@ -46,22 +48,44 @@ class PdfViewFragment : Fragment() {
     }
 
     lateinit var binding: FragmentPdfViewBinding
+
+    lateinit var finishedBooks: MutableList<Book>
+
+    lateinit var mySharedPreferences: SharedPreference
     @Suppress("DEPRECATION")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        mySharedPreferences = SharedPreference.newInstance(requireContext())
+//        selectedBooks = mySharedPreferences.GetSelectedBooks()
+        finishedBooks = mySharedPreferences.getFinishedBook()
         binding = FragmentPdfViewBinding.inflate(inflater, container, false)
 //        pdfView = binding.idPDFView
 //
 //        var pdfUrl = param1!!.file
 
-        RetrievePDFFromURL(binding.idPDFView).execute("http://b1.culture.ru/c/98010/idiot.pdf")
+        if (RetrievePDFFromURL(binding.idPDFView).execute("http://b1.culture.ru/c/98010/idiot.pdf") == null){
+            Toast.makeText(requireContext(), "your pdf is corrupted", Toast.LENGTH_SHORT).show()
+            binding.finished.visibility = View.INVISIBLE
+        }
 
+       else {
+            binding.finished.visibility = View.VISIBLE
+            RetrievePDFFromURL(binding.idPDFView).execute("http://b1.culture.ru/c/98010/idiot.pdf")
+        }
         // on below line we are calling our async
         // task to load our pdf file from url.
         // we are also passing our pdf view to
         // it along with pdf view url.
+
+        binding.finished.setOnClickListener {
+            param1!!.book_in_progress = 2
+            finishedBooks.add(param1!!)
+            mySharedPreferences.setInProgressBook(finishedBooks)
+            parentFragmentManager.beginTransaction().replace(R.id.main,HomeFragment()).commit()
+        }
 
 
 
@@ -70,7 +94,6 @@ class PdfViewFragment : Fragment() {
     class RetrievePDFFromURL(pdfView: PDFView) :
         AsyncTask<String, Void, InputStream>() {
 
-        // on below line we are creating a variable for our pdf view.
         var mypdfView: PDFView = pdfView
 
         // on below line we are calling our do in background method.

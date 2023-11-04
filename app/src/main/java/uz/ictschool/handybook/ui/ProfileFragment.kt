@@ -46,7 +46,7 @@ class ProfileFragment : Fragment() {
 
 
         binding.profileBackToHome.setOnClickListener {
-            parentFragmentManager.beginTransaction().replace(R.id.main, HomeFragment()).commit()
+            parentFragmentManager.beginTransaction().replace(R.id.main, DefaultFragment()).addToBackStack("Profile").commit()
         }
 
         binding.inReadingView.setOnClickListener {
