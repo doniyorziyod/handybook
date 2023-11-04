@@ -54,7 +54,7 @@ class PdfViewFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         mySharedPreferences = SharedPreference.newInstance(requireContext())
 //        selectedBooks = mySharedPreferences.GetSelectedBooks()
@@ -83,7 +83,7 @@ class PdfViewFragment : Fragment() {
         binding.finished.setOnClickListener {
             param1!!.book_in_progress = 2
             finishedBooks.add(param1!!)
-            mySharedPreferences.setInProgressBook(finishedBooks)
+            mySharedPreferences.setFinishedBook(finishedBooks)
             parentFragmentManager.beginTransaction().replace(R.id.main,HomeFragment()).commit()
         }
 

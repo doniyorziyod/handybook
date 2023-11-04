@@ -1,6 +1,5 @@
 package uz.ictschool.handybook.adapter
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -13,9 +12,9 @@ import uz.ictschool.handybook.R
 import uz.ictschool.handybook.data.Book
 import uz.ictschool.handybook.services.SharedPreference
 
-
-
-class CustomBooksList(var list: MutableList<Book>, var onClick: OnClick): RecyclerView.Adapter<CustomBooksList.MyViewHolder>(){
+class SavedAdapter(var context: Context, var onClicked: OnClicked): RecyclerView.Adapter<SavedAdapter.MyViewHolder>() {
+    var myshared = SharedPreference.newInstance(context)
+    var list = myshared.GetSelectedBooks()
     class MyViewHolder(view: View): RecyclerView.ViewHolder(view) {
         var rasm = view.findViewById<ImageView>(R.id.custom_book_image)
         var title = view.findViewById<TextView>(R.id.name_home)
@@ -32,21 +31,24 @@ class CustomBooksList(var list: MutableList<Book>, var onClick: OnClick): Recycl
         return list.size
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val a = list[position]
         holder.rasm.load(a.image)
         holder.authir.text = a.author
         holder.title.text = a.name
         holder.rating.text = a.reyting.toString()
-        holder.saved_ic.visibility = View.GONE
-
+        holder.saved_ic.setImageResource(R.drawable.book_marked_true)
+        holder.saved_ic.setOnClickListener {
+            list.remove(a)
+            notifyItemRemoved(position)
+            myshared.SetSelectedBooks(list)
+        }
         holder.itemView.setOnClickListener {
-            onClick.onClick(a)
+            onClicked.onClicked(a)
         }
     }
 
-    interface OnClick{
-        fun onClick(book: Book)
+    interface OnClicked{
+        fun onClicked(book: Book)
     }
 }

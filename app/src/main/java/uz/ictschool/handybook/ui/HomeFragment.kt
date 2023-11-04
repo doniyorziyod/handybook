@@ -1,5 +1,6 @@
 package uz.ictschool.handybook.ui
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -22,6 +23,7 @@ import uz.ictschool.handybook.api.APIClient
 import uz.ictschool.handybook.api.APIService
 import uz.ictschool.handybook.data.Book
 import uz.ictschool.handybook.data.CategoryData
+import uz.ictschool.handybook.databinding.FragmentDefaultBinding
 import uz.ictschool.handybook.databinding.FragmentHomeBinding
 import uz.ictschool.handybook.services.SharedPreference
 import kotlin.math.log
@@ -42,6 +44,7 @@ class HomeFragment : Fragment() {
         }
     }
 
+    lateinit var binding2: FragmentDefaultBinding
     lateinit var selectedBooks: MutableList<Book>
     lateinit var mySharedPreferences: SharedPreference
     lateinit var currentcategory: String
@@ -52,7 +55,7 @@ class HomeFragment : Fragment() {
     ): View {
 
 
-
+        binding2 = FragmentDefaultBinding.inflate(inflater, container, false)
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         mySharedPreferences = SharedPreference.newInstance(requireContext())
         selectedBooks = mySharedPreferences.GetSelectedBooks()
@@ -122,16 +125,7 @@ class HomeFragment : Fragment() {
                                                                     BookViewFragment.newInstance(book)
                                                                 ).commit()
                                                         }
-                                                    }, object : BookAdapter.OnSelected{
-                                                        override fun onSelected(book: Book) {
-                                                            if (book in selectedBooks){
-                                                                selectedBooks.remove(book)
-                                                            }else{
-                                                                selectedBooks.add(book)
-                                                            }
-                                                            mySharedPreferences.SetSelectedBooks(selectedBooks)
-                                                        }
-                                                    })
+                                                    }, requireContext())
                                                 Log.d(
                                                     TAG,
                                                     "onResponse: $category, ${response.body()},"
@@ -167,16 +161,7 @@ class HomeFragment : Fragment() {
                                                                         ).commit()
                                                                 }
 
-                                                            }, object : BookAdapter.OnSelected{
-                                                                override fun onSelected(book: Book) {
-                                                                    if (book in selectedBooks){
-                                                                        selectedBooks.remove(book)
-                                                                    }else{
-                                                                        selectedBooks.add(book)
-                                                                    }
-                                                                    mySharedPreferences.SetSelectedBooks(selectedBooks)
-                                                                }
-                                                            })
+                                                            }, requireContext())
                                                     } else {
 //                                                        binding.booksRv.visibility = View.GONE
                                                         binding.booksRv.visibility = View.VISIBLE
@@ -217,29 +202,17 @@ class HomeFragment : Fragment() {
                 call: Call<List<Book>>,
                 response: Response<List<Book>>
             ) {
-
                 books = response.body()!!.toMutableList()
                 Log.d(TAG, "onResponse: ${books}")
-                var layoutManager = GridLayoutManager(requireContext(),2,LinearLayoutManager.VERTICAL,false)
-
-
-                  val adapter =   BookAdapter(response.body()!!.toMutableList(), object : BookAdapter.ItemClick {
+                val layoutManager = GridLayoutManager(requireContext(),2,LinearLayoutManager.VERTICAL,false)
+                  val adapter = BookAdapter(response.body()!!.toMutableList(), object : BookAdapter.ItemClick {
                         override fun OnItemClick(book: Book) {
                             parentFragmentManager.beginTransaction()
                                 .replace(R.id.main, BookViewFragment.newInstance(book)).addToBackStack("Home")
                                 .commit()
                         }
 
-                    }, object : BookAdapter.OnSelected{
-                      override fun onSelected(book: Book) {
-                          if (book in selectedBooks){
-                              selectedBooks.remove(book)
-                          }else{
-                              selectedBooks.add(book)
-                          }
-                          mySharedPreferences.SetSelectedBooks(selectedBooks)
-                      }
-                  })
+                    }, requireContext())
 
                 binding.booksRv.visibility = View.VISIBLE
 
@@ -277,16 +250,7 @@ class HomeFragment : Fragment() {
 
                                     }
 
-                                }, object : BookAdapter.OnSelected{
-                                    override fun onSelected(book: Book) {
-                                        if (book in selectedBooks){
-                                            selectedBooks.remove(book)
-                                        }else{
-                                            selectedBooks.add(book)
-                                        }
-                                        mySharedPreferences.SetSelectedBooks(selectedBooks)
-                                    }
-                                })
+                                }, requireContext())
                                 binding.booksRv.visibility = View.VISIBLE
 //                                binding.booksRv.visibility = View.GONE
                             }else {

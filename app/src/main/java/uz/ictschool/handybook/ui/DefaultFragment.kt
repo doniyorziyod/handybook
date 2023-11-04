@@ -35,9 +35,8 @@ class DefaultFragment : Fragment() {
         binding.navigationView.show(0)
 
         binding.navigationView.add(MeowBottomNavigation.Model(0, R.drawable.home_ic2))
-        binding.navigationView.add(MeowBottomNavigation.Model(1, R.drawable.search_ic2))
-        binding.navigationView.add(MeowBottomNavigation.Model(2, R.drawable.saved_ic2))
-        binding.navigationView.add(MeowBottomNavigation.Model(3, R.drawable.person_ic2))
+        binding.navigationView.add(MeowBottomNavigation.Model(1, R.drawable.saved_ic2))
+        binding.navigationView.add(MeowBottomNavigation.Model(2, R.drawable.person_ic2))
 
         binding.navigationView.setOnClickMenuListener {
             when(it.id){
@@ -45,12 +44,9 @@ class DefaultFragment : Fragment() {
                     parentFragmentManager.beginTransaction().replace(R.id.main_frame, HomeFragment()).commit()
                 }
                 1 ->{
-                    parentFragmentManager.beginTransaction().replace(R.id.main_frame, SearchFragment()).commit()
-                }
-                2 ->{
                     parentFragmentManager.beginTransaction().replace(R.id.main_frame, SavedBooksFragment()).commit()
                 }
-                3 ->{
+                2 ->{
                     parentFragmentManager.beginTransaction().replace(R.id.main_frame, ProfileFragment()).commit()
                 }
             }

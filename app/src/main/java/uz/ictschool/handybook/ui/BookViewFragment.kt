@@ -79,16 +79,7 @@ class BookViewFragment : Fragment() {
                             .commit()
                     }
 
-                }, object : BookAdapter.OnSelected{
-                    override fun onSelected(book: Book) {
-                        if (book in selectedBooks){
-                            selectedBooks.remove(book)
-                        }else{
-                            selectedBooks.add(book)
-                        }
-                        mySharedPreferences.SetSelectedBooks(selectedBooks)
-                    }
-                })
+                }, requireContext())
 
                 binding.tavsiyalar.adapter = adapter
                 binding.tavsiyalar.layoutManager = layoutManager
