@@ -17,10 +17,8 @@ import uz.ictschool.handybook.R
 import uz.ictschool.handybook.api.APIClient
 import uz.ictschool.handybook.api.APIService
 import uz.ictschool.handybook.data.Book
-import uz.ictschool.handybook.data.CategoryData
 import uz.ictschool.handybook.databinding.FragmentBookViewBinding
 import uz.ictschool.handybook.services.SharedPreference
-import kotlin.math.log
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -113,7 +111,13 @@ class BookViewFragment : Fragment() {
         }
 
 
-        binding.audiokitob.setOnClickListener { parentFragmentManager.beginTransaction().replace(R.id.main, BookAudioFragment.newInstance(param1!!)).commit() }
+        val book = mutableListOf<Book>()
+        book.add(param1!!)
+        binding.audiokitob.setOnClickListener {
+            Log.d("TAGBook", "onCreateView: $book")
+            parentFragmentManager.beginTransaction().replace(R.id.main, BookAudioFragment()).commit()
+            mySharedPreferences.setThisBook(book!!)
+        }
 
 
         return binding.root

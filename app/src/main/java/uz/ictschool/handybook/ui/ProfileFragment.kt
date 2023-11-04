@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import farrukh.remotely.adapter.BookAdapter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -16,6 +17,7 @@ import uz.ictschool.handybook.api.APIClient
 import uz.ictschool.handybook.api.APIService
 import uz.ictschool.handybook.data.Book
 import uz.ictschool.handybook.databinding.FragmentProfileBinding
+import uz.ictschool.handybook.services.SharedPreference
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -32,8 +34,10 @@ class ProfileFragment : Fragment() {
         }
     }
 
-
-    lateinit var mySharedPreferences: SharedPreferences
+    lateinit var selectedBooks: MutableList<Book>
+    lateinit var finishedBooks: MutableList<Book>
+    lateinit var inProgressBooks: MutableList<Book>
+    lateinit var mySharedPreferences: SharedPreference
     private val api = APIClient.getInstance().create(APIService::class.java)
     lateinit var binding: FragmentProfileBinding
     override fun onCreateView(
@@ -41,9 +45,40 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentProfileBinding.inflate(inflater, container, false)
+        mySharedPreferences = SharedPreference.newInstance(requireContext())
+        inProgressBooks = mySharedPreferences.getInProgressBook()
+        finishedBooks = mySharedPreferences.getFinishedBook()
+        selectedBooks = mySharedPreferences.GetSelectedBooks()
 
-        binding.profileSaqlanganKitoblarRecycler.adapter = CustomBooksList(requireContext())
+        binding.profileSaqlanganKitoblarRecycler.adapter = CustomBooksList(selectedBooks, object : CustomBooksList.OnClick{
+            override fun onClick(book: Book, position: Int) {
+                selectedBooks.remove(book)
+                binding.profileSaqlanganKitoblarRecycler.adapter!!.notifyItemRemoved(position)
+                mySharedPreferences.SetSelectedBooks(selectedBooks)
+            }
+        }, object : CustomBooksList.OnBosildi{
+            override fun onBosildi(book: Book) {
+                parentFragmentManager.beginTransaction().replace(R.id.main, BookViewFragment.newInstance(book)).commit()
+            }
 
+        })
+
+        binding.profileOqilayotganKitoblarRecycler.adapter = CustomBooksList(inProgressBooks, object : CustomBooksList.OnClick{
+            override fun onClick(book: Book, position: Int) {
+                if (selectedBooks.contains(book)){
+                    selectedBooks.remove(book)
+                }else{
+                    selectedBooks.add(book)
+                }
+                mySharedPreferences.SetSelectedBooks(selectedBooks)
+            }
+
+        }, object : CustomBooksList.OnBosildi{
+            override fun onBosildi(book: Book) {
+                parentFragmentManager.beginTransaction().replace(R.id.main, BookViewFragment.newInstance(book)).commit()
+            }
+
+        })
 
         binding.profileBackToHome.setOnClickListener {
             parentFragmentManager.beginTransaction().replace(R.id.main, DefaultFragment()).addToBackStack("Profile").commit()

@@ -59,6 +59,18 @@ class SharedPreference private constructor(context: Context){
         edit.putString("InProgress", gson.toJson(mutableList)).apply()
     }
 
+    fun setThisBook(mutableList: MutableList<Book>) {
+        edit.putString("audiobook", gson.toJson(mutableList)).apply()
+    }
+
+    fun getThisBook() : MutableList<Book> {
+        val data: String = sharedPreferences.getString("audiobook", "")!!
+        if (data == ""){
+            return mutableListOf()
+        }
+        val typeToken = object : TypeToken<MutableList<Book>>(){}.type
+        return gson.fromJson(data, typeToken)
+    }
     fun getFinishedBook(): MutableList<Book>{
         val data: String = sharedPreferences.getString("Finished", "")!!
         if (data == ""){
