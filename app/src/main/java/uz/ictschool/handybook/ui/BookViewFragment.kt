@@ -61,7 +61,7 @@ class BookViewFragment : Fragment() {
         }
         val api = APIClient.getInstance().create(APIService::class.java)
 //        val books = mutableListOf<Book>()
-
+        param1 = mySharedPreferences.getThisBook()[0]
         binding.appCompatImageView.load(param1!!.image)
         binding.textView5.setText(param1!!.name)
         binding.description.setText(param1!!.description)
