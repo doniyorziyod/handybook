@@ -61,17 +61,44 @@
                     app:backgroundTint="@color/white" />
             </androidx.appcompat.widget.Toolbar>
 
-            <com.google.android.material.tabs.TabLayout
+            <androidx.cardview.widget.CardView
                 android:id="@+id/tabLayout"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="50dp"
                 android:layout_marginHorizontal="30dp"
-                android:background="#45756F6F"
+                android:backgroundTint="#45756F6F"
                 app:layout_constraintBottom_toBottomOf="@+id/view"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/toolbar"
-                app:layout_constraintVertical_bias="0.178" />
+                app:layout_constraintVertical_bias="0.178"
+                >
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="2"
+                    >
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/ekitob"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:backgroundTint="@color/light_blue"
+                        android:text="E-Kitob"
+                        android:textColor="@color/back_blue"
+                        />
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/audiokitob"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:backgroundTint="@color/white"
+                        android:text="Audio kitob"
+                        android:textColor="@color/back_blue"
+                        />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </androidx.cardview.widget.CardView>
 
 
             <androidx.appcompat.widget.AppCompatImageView
