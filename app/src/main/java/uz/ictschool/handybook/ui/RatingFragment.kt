@@ -1,5 +1,6 @@
 package uz.ictschool.handybook.ui
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -19,18 +20,10 @@ import uz.ictschool.handybook.data.CommentDataOrigin
 import uz.ictschool.handybook.databinding.FragmentRatingBinding
 import uz.ictschool.handybook.services.SharedPreference
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [RatingFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class RatingFragment : Fragment() {
-    // TODO: Rename and change types of parameters
     private var param1: Book? = null
     private var param2: String? = null
 
@@ -42,10 +35,11 @@ class RatingFragment : Fragment() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val binding = FragmentRatingBinding.inflate(inflater,container,false)
 
 //        binding.ratingBar.rating
@@ -55,7 +49,7 @@ class RatingFragment : Fragment() {
 
         binding.jonatish.setOnClickListener {
 //            Log.d("TAG", "onCreateView: ${user.get(0).id}")
-            var commentData = CommentDataOrigin(book_id = param1!!.id, reyting = binding.ratingBar.rating.toInt(), text = binding.commentsss.text.toString(), user_id = user[0].id)
+            val commentData = CommentDataOrigin(book_id = param1!!.id, reyting = binding.ratingBar.rating.toInt(), text = binding.commentsss.text.toString(), user_id = user[0].id)
             Log.d("User Id", "onCreateView: ${shared.getLoginData()[0].id}")
 
             api.giveCommentToTheBook(commentData).enqueue(object :Callback<CommentData>{

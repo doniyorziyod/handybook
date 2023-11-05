@@ -71,6 +71,9 @@ class CommentFragment : Fragment() {
 
         })
 
+        binding.back.setOnClickListener {
+            parentFragmentManager.beginTransaction().replace(R.id.main, DefaultFragment()).commit()
+        }
         binding.addNewComment.setOnClickListener {
             parentFragmentManager.beginTransaction().replace(R.id.main,RatingFragment.newInstance(param1!!)).addToBackStack("Comment").commit()
         }
