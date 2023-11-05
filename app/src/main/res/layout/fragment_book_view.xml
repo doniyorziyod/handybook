@@ -49,16 +49,8 @@
                     android:fontFamily="@font/montserratsemibold"
                     android:text="Batafsil"
                     android:textColor="@color/white"
-
                     android:textSize="25dp" />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/book_mark"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="end"
-                    android:background="@drawable/bookmark_icon"
-                    app:backgroundTint="@color/white" />
             </androidx.appcompat.widget.Toolbar>
 
             <androidx.cardview.widget.CardView
