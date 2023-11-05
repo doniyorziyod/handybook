@@ -213,7 +213,7 @@
         android:background="@color/white"
         app:itemIconTint="@color/back_blue"
         app:itemTextColor="@color/back_blue"
-        app:headerLayout="@layout/drawer_custom"
+        app:headerLayout="@layout/fragment_custom_drawer"
         />
 
 

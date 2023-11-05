@@ -48,7 +48,7 @@ class PdfViewFragment : Fragment() {
             }
             parentFragmentManager.beginTransaction().replace(R.id.main, DefaultFragment()).commit()
         }
-        openPDF("http://handybook.uz/frontend/web/file/911697626217.pdf")
+        openPDF("https://dagrs.berkeley.edu/sites/default/files/2020-01/sample.pdf")
 
         return binding.root
     }

@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SeekBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import coil.load
@@ -27,6 +28,8 @@ class BookAudioFragment : Fragment() {
     lateinit var binding: FragmentBookAudioBinding
     private lateinit var runnable: Runnable
     private var handler: Handler = Handler()
+    private var isPlaying = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -44,42 +47,40 @@ class BookAudioFragment : Fragment() {
         mySharedPreferences = SharedPreference.newInstance(requireContext())
         val book = mySharedPreferences.getThisBook()
         binding.bookImg.load(book[0].image)
+        media.setAudioStreamType(AudioManager.STREAM_MUSIC)
+        try {
+            if (book[0].audio != null) {
+                media.setDataSource(book[0].audio.toString())
+            } else {
+                media.setDataSource("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3")
+            }
+            media.prepare()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
         Log.d("AUDIO", "onCreateView: ${book.get(0)}")
         binding.play.setOnClickListener {
-            binding.pause.visibility = View.VISIBLE
-            binding.play.visibility = View.GONE
-            media.setAudioStreamType(AudioManager.STREAM_MUSIC)
-            try {
-                if (book[0].audio != null) {
-                    media.setDataSource(book[0].audio.toString())
-                } else {
-                    media.setDataSource("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3")
-                }
-                media.prepare()
+            if (!isPlaying) {
+                Toast.makeText(requireContext(), "Audio started playing..", Toast.LENGTH_SHORT).show()
+                binding.play.setImageResource(R.drawable.icon_pause)
+                isPlaying = true
                 media.start()
-            } catch (e: Exception) {
-                e.printStackTrace()
+            } else {
+                Toast.makeText(requireContext(), "Audio stopped playing..", Toast.LENGTH_SHORT).show()
+                binding.play.setImageResource(R.drawable.icon_play)
+                isPlaying = false
+                media.pause()
             }
-            initializeSeekBar()
-            Toast.makeText(requireContext(), "Audio started playing..", Toast.LENGTH_SHORT).show()
-        }
-        binding.pause.setOnClickListener {
-            binding.play.visibility = View.VISIBLE
-            binding.pause.visibility = View.GONE
-            media.setAudioStreamType(AudioManager.STREAM_MUSIC)
-            try {
-                if (book[0].audio != null) {
-                    media.setDataSource(book[0].audio.toString())
-                } else {
-                    media.setDataSource("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3")
+            binding.seek.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
+                    if (media != null && b) {
+                        media.seekTo(i * 1000)
+                    }
                 }
-                media.prepare()
-                media.stop()
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
+                override fun onStartTrackingTouch(seekBar: SeekBar) {}
+                override fun onStopTrackingTouch(seekBar: SeekBar) {}
+            })
             initializeSeekBar()
-            Toast.makeText(requireContext(), "Audio stopped playing..", Toast.LENGTH_SHORT).show()
         }
         binding.back.setOnClickListener {
             mySharedPreferences.setThisBook(book)
@@ -103,7 +104,6 @@ class BookAudioFragment : Fragment() {
         }
         handler.postDelayed(runnable, 1000)
     }
-
     val MediaPlayer.seconds: Int
         get() {
             return this.duration / 1000
