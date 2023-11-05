@@ -50,14 +50,12 @@ class SignUpFragment : Fragment() {
             if (data != null){
                 api.register(data).enqueue(object : Callback<UserToken>{
                     override fun onResponse(call: Call<UserToken>, response: Response<UserToken>) {
-//                        binding.signupUsernameEditAcet.error = "fgsdfgsdfgds"
                         if (response.code() == 422){
                             binding.signupUsernameEditAcet.error = "Bunday username band"
                         }
                         if (response.isSuccessful && response.code() == 200){
                             val a = mutableListOf<UserToken>()
                             a.add(response.body()!!)
-                            Log.d("TAGKOT", "onResponse: ${response.body()!!.id}")
                             mySharedPreferences.setLoginData(a)
                             Log.d("TAG123", "onResponse: ${mySharedPreferences.getLoginData()}")
                             parentFragmentManager.beginTransaction().replace(R.id.main, DefaultFragment()).commit()
@@ -101,7 +99,7 @@ class SignUpFragment : Fragment() {
             binding.signupIsm.error = "Ismingiz va Familiyangizni to`liq kiriting"
             return null
         }
-        if (username.length<3){
+        if (username.length<5){
             binding.signupUsernameEditAcet.error = "Username 3ta belgidan kam"
             return null
         }

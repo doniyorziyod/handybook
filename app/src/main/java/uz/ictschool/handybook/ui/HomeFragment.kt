@@ -44,7 +44,6 @@ class HomeFragment : Fragment() {
         }
     }
 
-    lateinit var binding2: FragmentDefaultBinding
     lateinit var selectedBooks: MutableList<Book>
     lateinit var mySharedPreferences: SharedPreference
     lateinit var currentcategory: String
@@ -53,14 +52,11 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-
-        binding2 = FragmentDefaultBinding.inflate(inflater, container, false)
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         mySharedPreferences = SharedPreference.newInstance(requireContext())
         selectedBooks = mySharedPreferences.GetSelectedBooks()
         binding.imageView2.setOnClickListener {
-            parentFragmentManager.beginTransaction().replace(R.id.main, ProfileFragment()).commit()
+            parentFragmentManager.beginTransaction().replace(R.id.main, ProfileFragment()).addToBackStack("Home").commit()
         }
         var books = mutableListOf<Book>()
         val api = APIClient.getInstance().create(APIService::class.java)
@@ -302,6 +298,10 @@ class HomeFragment : Fragment() {
                     R.id.menu_logout -> {
                         val shared = SharedPreference.newInstance(requireContext())
                         shared.setLoginData(mutableListOf())
+                        shared.setFinishedBook(mutableListOf())
+                        shared.SetSelectedBooks(mutableListOf())
+                        shared.setInProgressBook(mutableListOf())
+                        shared.setThisBook(mutableListOf())
                         parentFragmentManager.beginTransaction().replace(R.id.main, SignInFragment()).commit()
                     }
                 }

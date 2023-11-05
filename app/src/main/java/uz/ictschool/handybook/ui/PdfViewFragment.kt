@@ -57,6 +57,16 @@ class PdfViewFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {binding = FragmentPdfViewBinding.inflate(inflater, container, false)
+        mySharedPreferences = SharedPreference.newInstance(requireContext())
+        finishedBooks = mySharedPreferences.getFinishedBook()
+        binding.finished.setOnClickListener {
+            if (param1 !in finishedBooks || finishedBooks.isEmpty()){
+                finishedBooks.add(param1!!)
+                mySharedPreferences.setFinishedBook(finishedBooks)
+                Log.d("Finished Books", "onCreateView: $finishedBooks")
+            }
+            parentFragmentManager.beginTransaction().replace(R.id.main, DefaultFragment()).commit()
+        }
 
 //        pdfView = binding.idPDFView
 //
@@ -101,6 +111,7 @@ class PdfViewFragment : Fragment() {
             mypdfView.fromStream(result).load()
 
         }
+
 
     companion object {
 

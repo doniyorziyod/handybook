@@ -14,20 +14,21 @@
         app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></com.github.barteksc.pdfviewer.PDFView>
+        app:layout_constraintTop_toTopOf="parent">
+
+    </com.github.barteksc.pdfviewer.PDFView>
 
 
-<!--    <com.google.android.material.button.MaterialButton-->
-<!--        android:id="@+id/finished"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:text="I've finished reading this book"-->
-<!--        android:fontFamily="@font/montserratsemibold"-->
-
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginHorizontal="24dp"-->
-<!--        android:layout_marginBottom="16dp"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent" />-->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/finished"
+        android:layout_width="0dp"
+        android:text="I've finished reading this book"
+        android:fontFamily="@font/montserratsemibold"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
