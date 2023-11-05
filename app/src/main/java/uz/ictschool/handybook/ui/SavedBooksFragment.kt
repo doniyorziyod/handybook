@@ -33,7 +33,7 @@ class SavedBooksFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentSavedBooksBinding.inflate(inflater, container, false)
-        var myshared = SharedPreference.newInstance(requireContext())
+        val myshared = SharedPreference.newInstance(requireContext())
 
         if (myshared.GetSelectedBooks().isEmpty()){
             binding.savedRecycler.visibility = View.GONE

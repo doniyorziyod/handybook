@@ -16,6 +16,7 @@ import uz.ictschool.handybook.api.APIService
 import uz.ictschool.handybook.data.LoginDetails
 import uz.ictschool.handybook.data.UserToken
 import uz.ictschool.handybook.databinding.FragmentSignInBinding
+import uz.ictschool.handybook.services.SharedPreference
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -34,6 +35,7 @@ class SignInFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentSignInBinding.inflate(inflater, container, false)
+        var myShared = SharedPreference.newInstance(requireContext())
 
         binding.register.setOnClickListener {
             parentFragmentManager.beginTransaction().replace(R.id.main, SignUpFragment())
@@ -54,9 +56,11 @@ class SignInFragment : Fragment() {
                     override fun onResponse(call: Call<UserToken>, response: Response<UserToken>) {
                         Log.d("TAG", "onResponse: ${response.body().toString()+user}")
                         if (response.isSuccessful){
+                            val list = mutableListOf<UserToken>()
+                            list.add(response.body()!!)
+                            myShared.setLoginData(list)
                             parentFragmentManager.beginTransaction().replace(R.id.main,HomeFragment()).commit()
-
-                            }
+                        }
                         else{
                             Toast.makeText(requireContext(), "password or username is incorrect ! please try again", Toast.LENGTH_SHORT).show()
 
