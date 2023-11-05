@@ -44,10 +44,9 @@ class SignUpFragment : Fragment() {
     ): View {
         binding = FragmentSignUpBinding.inflate(inflater, container, false)
         mySharedPreferences = SharedPreference.newInstance(requireContext())
-
         binding.signupSignupMb.setOnClickListener {
-            val data = checkRegistrationInfo(name = binding.signupIsm.text.toString(),username =  binding.signupUsernameEditAcet.text.toString(),
-               email =  binding.signupEmailEditAcet.text.toString(),password =  binding.signupPasswordEditAcet.text.toString(),repassword = binding.signupReenterPasswordEditAcet.text.toString())
+            val data = checkRegistrationInfo(binding.signupIsm.text.toString(), binding.signupUsernameEditAcet.text.toString(),
+                binding.signupEmailEditAcet.text.toString(), binding.signupPasswordEditAcet.text.toString(), binding.signupReenterPasswordEditAcet.text.toString())
             if (data != null){
                 api.register(data).enqueue(object : Callback<UserToken>{
                     override fun onResponse(call: Call<UserToken>, response: Response<UserToken>) {
@@ -117,7 +116,7 @@ class SignUpFragment : Fragment() {
             return null
         }
 
-        return User(username = username,email =  email,password =  password, fullname =  name)
+        return User(username = username,email =  email,password =  password, fullname = name)
     }
 
     companion object {
