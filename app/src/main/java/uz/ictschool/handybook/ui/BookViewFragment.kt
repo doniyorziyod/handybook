@@ -96,7 +96,7 @@ class BookViewFragment : Fragment() {
             }
 
             mySharedPreferences.setInProgressBook(inProgressBook)
-            parentFragmentManager.beginTransaction().replace(R.id.main,PdfViewFragment.RetrievePDFFromURL.newInstance(param1!!)).commit()
+            parentFragmentManager.beginTransaction().replace(R.id.main,PdfViewFragment.newInstance(param1!!)).commit()
         }
 
 
