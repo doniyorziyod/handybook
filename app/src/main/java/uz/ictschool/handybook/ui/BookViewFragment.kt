@@ -20,17 +20,9 @@ import uz.ictschool.handybook.data.Book
 import uz.ictschool.handybook.databinding.FragmentBookViewBinding
 import uz.ictschool.handybook.services.SharedPreference
 
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [BookViewFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class BookViewFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: Book? = null
@@ -113,7 +105,7 @@ class BookViewFragment : Fragment() {
         binding.audiokitob.setOnClickListener {
             Log.d("TAGBook", "onCreateView: $book")
             parentFragmentManager.beginTransaction().replace(R.id.main, BookAudioFragment()).commit()
-            mySharedPreferences.setThisBook(book!!)
+            mySharedPreferences.setThisBook(book)
         }
 
         binding.back.setOnClickListener { parentFragmentManager.beginTransaction().replace(R.id.main, HomeFragment()).commit() }
@@ -121,16 +113,6 @@ class BookViewFragment : Fragment() {
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment BookViewFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
         fun newInstance(param1: Book) =
             BookViewFragment().apply {
                 arguments = Bundle().apply {

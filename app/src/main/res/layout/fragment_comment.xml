@@ -32,13 +32,6 @@
 
             android:textSize="33dp" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/book_mark"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_gravity="end"
-            android:background="@drawable/bookmark_icon"
-            app:backgroundTint="@color/back_blue" />
     </androidx.appcompat.widget.Toolbar>
 
     <androidx.core.widget.NestedScrollView

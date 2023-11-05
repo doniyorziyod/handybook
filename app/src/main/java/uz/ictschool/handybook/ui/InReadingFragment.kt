@@ -6,19 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import uz.ictschool.handybook.R
+import uz.ictschool.handybook.adapter.CustomBooksList
+import uz.ictschool.handybook.data.Book
+import uz.ictschool.handybook.databinding.FragmentInReadingBinding
+import uz.ictschool.handybook.services.SharedPreference
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [InReadingFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class InReadingFragment : Fragment() {
-    // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
 
@@ -30,24 +26,31 @@ class InReadingFragment : Fragment() {
         }
     }
 
+    lateinit var binding: FragmentInReadingBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_in_reading, container, false)
+    ): View {
+        binding = FragmentInReadingBinding.inflate(inflater, container, false)
+        val myShared = SharedPreference.newInstance(requireContext())
+
+        if (myShared.getInProgressBook().isEmpty()){
+            binding.InReadingRecycler.visibility = View.GONE
+            binding.inReadingNotFound.visibility = View.VISIBLE
+        }else{
+            binding.InReadingRecycler.adapter = CustomBooksList(myShared.getInProgressBook(), object : CustomBooksList.OnClick{
+                override fun onClick(book: Book) {
+                    parentFragmentManager.beginTransaction().replace(R.id.main, BookViewFragment.newInstance(book)).addToBackStack("Profile").commit()
+                }
+            })
+            binding.InReadingRecycler.visibility = View.VISIBLE
+            binding.inReadingNotFound.visibility = View.GONE
+        }
+
+        return binding.root
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment InReadingFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             InReadingFragment().apply {

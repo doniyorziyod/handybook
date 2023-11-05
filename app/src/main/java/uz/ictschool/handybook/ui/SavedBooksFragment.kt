@@ -35,12 +35,21 @@ class SavedBooksFragment : Fragment() {
         binding = FragmentSavedBooksBinding.inflate(inflater, container, false)
         var myshared = SharedPreference.newInstance(requireContext())
 
-        binding.savedRecycler.adapter = SavedAdapter(requireContext(), object : SavedAdapter.OnClicked{
-            override fun onClicked(book: Book) {
-                parentFragmentManager.beginTransaction().replace(R.id.main, BookViewFragment.newInstance(book)).commit()
-            }
-        })
-        binding.savedRecycler.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        if (myshared.GetSelectedBooks().isEmpty()){
+            binding.savedRecycler.visibility = View.GONE
+            binding.savedNotFound.visibility = View.VISIBLE
+        }else{
+            binding.savedRecycler.adapter = SavedAdapter(requireContext(), object : SavedAdapter.OnClicked{
+                override fun onClicked(book: Book) {
+                    parentFragmentManager.beginTransaction().replace(R.id.main, BookViewFragment.newInstance(book)).addToBackStack("Profile").commit()
+                }
+            })
+            binding.savedRecycler.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            binding.savedRecycler.visibility = View.VISIBLE
+            binding.savedNotFound.visibility = View.GONE
+        }
+
+
 
         binding.savedBackToHome.setOnClickListener {
             parentFragmentManager.beginTransaction().replace(R.id.main, DefaultFragment()).commit()

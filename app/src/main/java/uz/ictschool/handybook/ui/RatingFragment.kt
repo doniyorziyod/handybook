@@ -55,14 +55,14 @@ class RatingFragment : Fragment() {
 
         binding.jonatish.setOnClickListener {
 //            Log.d("TAG", "onCreateView: ${user.get(0).id}")
-            var commentData = CommentDataOrigin(book_id = param1!!.id, reyting = binding.ratingBar.rating.toInt(), text = binding.commentsss.text.toString(), user_id = user.get(0).id)
-
+            var commentData = CommentDataOrigin(book_id = param1!!.id, reyting = binding.ratingBar.rating.toInt(), text = binding.commentsss.text.toString(), user_id = user[0].id)
+            Log.d("User Id", "onCreateView: ${shared.getLoginData()[0].id}")
 
             api.giveCommentToTheBook(commentData).enqueue(object :Callback<CommentData>{
                 override fun onResponse(call: Call<CommentData>, response: Response<CommentData>) {
                     Log.d("TAG6", "onResponse: ${response.body()}")
                     Toast.makeText(requireContext(), "sent", Toast.LENGTH_SHORT).show()
-                    parentFragmentManager.beginTransaction().replace(R.id.main,CommentFragment()).commit()
+                    parentFragmentManager.beginTransaction().replace(R.id.main,CommentFragment.newInstance(param1!!)).commit()
                 }
 
                 override fun onFailure(call: Call<CommentData>, t: Throwable) {
@@ -79,15 +79,6 @@ class RatingFragment : Fragment() {
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment RatingFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: Book) =
             RatingFragment().apply {

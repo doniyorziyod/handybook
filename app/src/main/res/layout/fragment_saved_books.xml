@@ -34,4 +34,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_margin="10dp"/>
+    <ImageView
+        android:visibility="gone"
+        android:id="@+id/saved_notFound"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/saved_back_to_home"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/notfound"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

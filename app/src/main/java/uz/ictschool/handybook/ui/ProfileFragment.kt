@@ -57,6 +57,8 @@ class ProfileFragment : Fragment() {
             }
         })
 
+        binding.profilePersonName.text = mySharedPreferences.getLoginData()[0].username
+
         binding.inReadingCount.text = inProgressBooks.size.toString()
         binding.outReadingCount.text = finishedBooks.size.toString()
         binding.savedReadingCount.text = selectedBooks.size.toString()
@@ -75,7 +77,7 @@ class ProfileFragment : Fragment() {
         })
 
         binding.profileBackToHome.setOnClickListener {
-            parentFragmentManager.beginTransaction().replace(R.id.main, DefaultFragment()).addToBackStack("Profile").commit()
+            parentFragmentManager.beginTransaction().replace(R.id.main, DefaultFragment()).addToBackStack("Home").commit()
         }
 
         binding.inReadingView.setOnClickListener {
