@@ -60,7 +60,7 @@ class SignUpFragment : Fragment() {
                             Log.d("TAG123", "onResponse: ${mySharedPreferences.getLoginData()}")
                             parentFragmentManager.beginTransaction().replace(R.id.main, DefaultFragment()).commit()
                         }
-                        Log.d("TAG", "onResponse: ${response.body()}")
+                        Log.d("TAG", "onResponse: ${response.body().toString() + response.code().toString()}")
                     }
 
                     override fun onFailure(call: Call<UserToken>, t: Throwable) {
@@ -116,7 +116,7 @@ class SignUpFragment : Fragment() {
             return null
         }
 
-        return User(username, email, password, name)
+        return User(username = username,email =  email,password =  password, fullname = name)
     }
 
     companion object {

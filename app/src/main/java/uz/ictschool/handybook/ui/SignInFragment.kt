@@ -42,26 +42,36 @@ class SignInFragment : Fragment() {
 
         val api = APIClient.getInstance().create(APIService::class.java)
 
-        val user =
-            LoginDetails(binding.loginOrg.text.toString(), binding.passwordOrg.text.toString())
+
 
 
         binding.continueBtn.setOnClickListener {
-            api.login(user).enqueue(object : Callback<UserToken> {
-                override fun onResponse(call: Call<UserToken>, response: Response<UserToken>) {
-                    if (response.body() == null){
-                        Toast.makeText(requireContext(), "password or username is incorrect ! please try again", Toast.LENGTH_SHORT).show()
+            val user =
+                LoginDetails(username = binding.loginOrg.text.toString().trim(),password =  binding.passwordOrg.text.toString().trim())
+
+            if (binding.loginOrg.text.toString().isNotEmpty() && binding.passwordOrg.text.toString().isNotEmpty()){
+                api.login(user).enqueue(object : Callback<UserToken> {
+                    override fun onResponse(call: Call<UserToken>, response: Response<UserToken>) {
+                        Log.d("TAG", "onResponse: ${response.body().toString()+user}")
+                        if (response.isSuccessful){
+                            parentFragmentManager.beginTransaction().replace(R.id.main,HomeFragment()).commit()
+
+                            }
+                        else{
+                            Toast.makeText(requireContext(), "password or username is incorrect ! please try again", Toast.LENGTH_SHORT).show()
+
+                        }}
+
+                    override fun onFailure(call: Call<UserToken>, t: Throwable) {
+                        Log.d("TAG", "onFailure: $t")
+
                     }
-                    else{
-                    parentFragmentManager.beginTransaction().replace(R.id.main,HomeFragment()).commit()
-                }}
 
-                override fun onFailure(call: Call<UserToken>, t: Throwable) {
-                    Log.d("TAG", "onFailure: $t")
+                })
+            }
 
-                }
+            else Toast.makeText(requireContext(), "username or password field cannot be empty", Toast.LENGTH_SHORT).show()
 
-            })
         }
 
 

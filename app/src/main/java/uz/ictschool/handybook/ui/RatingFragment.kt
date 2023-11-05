@@ -74,6 +74,7 @@ class RatingFragment : Fragment() {
 
         binding.textView7.setText(param1!!.name+" romani sizga qanchalik manzur keldi?")
 
+            Log.d("TAG", "onCreateView: ${user.get(0).id}")
 
         return binding.root
     }
