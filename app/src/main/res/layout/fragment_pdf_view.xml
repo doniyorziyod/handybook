@@ -7,17 +7,14 @@
     tools:context=".ui.PdfViewFragment">
 
 
-    <com.github.barteksc.pdfviewer.PDFView
-        android:id="@+id/idPDFView"
+    <WebView
+        android:id="@+id/web"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-    </com.github.barteksc.pdfviewer.PDFView>
-
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/finished"

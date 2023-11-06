@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebViewClient
 import uz.ictschool.handybook.R
 import uz.ictschool.handybook.data.Book
 import uz.ictschool.handybook.databinding.FragmentPdfViewBinding
@@ -38,24 +39,29 @@ class PdfViewFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentPdfViewBinding.inflate(inflater, container, false)
-        mySharedPreferences = SharedPreference.newInstance(requireContext())
-        finishedBooks = mySharedPreferences.getFinishedBook()
-        binding.finished.setOnClickListener {
-            if (param1 !in finishedBooks || finishedBooks.isEmpty()){
-                finishedBooks.add(param1!!)
-                mySharedPreferences.setFinishedBook(finishedBooks)
-                Log.d("Finished Books", "onCreateView: $finishedBooks")
-            }
-            parentFragmentManager.beginTransaction().replace(R.id.main, DefaultFragment()).commit()
-        }
-        openPDF("https://dagrs.berkeley.edu/sites/default/files/2020-01/sample.pdf")
-
+//        mySharedPreferences = SharedPreference.newInstance(requireContext())
+//        finishedBooks = mySharedPreferences.getFinishedBook()
+//        binding.finished.setOnClickListener {
+//            if (param1 !in finishedBooks || finishedBooks.isEmpty()){
+//                finishedBooks.add(param1!!)
+//                mySharedPreferences.setFinishedBook(finishedBooks)
+//                Log.d("Finished Books", "onCreateView: $finishedBooks")
+//            }
+////            parentFragmentManager.beginTransaction().replace(R.id.main, DefaultFragment()).commit()
+//        }
+//        openPDF("https://dagrs.berkeley.edu/sites/default/files/2020-01/sample.pdf")
+        val url = param1!!.file
+//        val webView = view.findViewById<WebView>(R.id.web)
+        binding.web.webViewClient = WebViewClient()
+        binding.web.settings.setSupportZoom(true)
+        binding.web.settings.javaScriptEnabled = true
+        binding.web.loadUrl("https://docs.google.com/gview?embedded=true&url=$url")
         return binding.root
     }
 
-    private fun openPDF(url: String) {
-        binding.idPDFView.fromUri(Uri.parse(url)).defaultPage(0).enableSwipe(true).load()
-    }
+//    private fun openPDF(url: String) {
+//        binding.idPDFView.fromUri(Uri.parse(url)).defaultPage(0).enableSwipe(true).load()
+//    }
 
     companion object {
         @JvmStatic
